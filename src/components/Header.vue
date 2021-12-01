@@ -44,7 +44,6 @@
     /*margin-bottom: 0;*/
     border-radius: 10px 10px 0 0;
 
-    text-decoration: none;
     color: var(--clr-grey);
     font-weight: 600;
     bottom: .3em;

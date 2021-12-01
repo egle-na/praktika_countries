@@ -1,7 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Countries from "@/components/Countries";
+import CountriesTable from "@/components/CountriesTable";
+import CitiesTable from "@/components/CitiesTable";
 
 Vue.use(VueRouter);
 
@@ -10,20 +11,26 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes: [
         {
+            path: '/',
+            redirect: '/countries'
+        },
+        {
             path: '/countries',
             name: 'countries',
-            component: Countries,
+            component: CountriesTable,
             children: [
                 {
                     path: 'countries/:country_id/cities',
-                    // component: Country,
+                    component: CitiesTable,
 
                 }
             ]
         },
         {
-            path: '/cities',
+            path: '*/cities',
             name: 'cities',
+            component: CitiesTable,
+
         }
     ]
 })

@@ -1,11 +1,23 @@
 <template>
+  <div>
 
-  <button id="add-item-btn" class="shadow-container">&plus;</button>
+    <button id="add-item-btn" class="shadow-container" @click="isOpen = true" >&plus;</button>
+    <ItemCard :type="'add'" v-show="isOpen" @close="isOpen = false"/>
 
+  </div>
 </template>
 <script>
+  import ItemCard from "@/components/ItemCard";
+
   export default {
-    name: 'AddItemBtn'
+    name: 'AddItemBtn',
+    components: {ItemCard},
+    params: [ "type" ],
+    data() {
+      return {
+        isOpen: false
+      }
+    },
   }
 </script>
 
@@ -37,5 +49,6 @@
     transform: scale(1.1);
     /*box-shadow: 0 0 10px #333;*/
   }
+
 
 </style>

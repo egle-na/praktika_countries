@@ -2,14 +2,11 @@
   <div>
 
     <div class="title-container">
-
       <h1 class="title">{{ routeName }}</h1>
-      <add-item-btn />
-
+      <add-item-btn :type="'add'" />
     </div>
 
-    <div class="search-filter-container">
-
+    <div class="search-filter-container"> <!-- create a Container -->
       <div class="search-container shadow-container">
         <input type="text" id="search" name="search" v-model="searchQr">
         <button id="search-btn">
@@ -18,7 +15,6 @@
       </div>
 
       <input type="date" id="date-filter" class="shadow-container">
-
     </div>
 
     <slot class="shadow-container"></slot>
@@ -89,7 +85,7 @@
 
     font-size: 4rem;
     font-weight: 400;
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--ff-oswald);
   }
 
   .search-filter-container {
@@ -142,7 +138,7 @@
   }
 
   .page-numbers {
-    margin: 0 auto;
+    margin: 2em auto 0;
     width: fit-content;
   }
 
@@ -155,7 +151,7 @@
   }
 
   .current-page {
-    background: var(--clr-grey);
+    background: #5C5C5C88;
     color: var(--clr-light);
   }
 

@@ -3,61 +3,90 @@
 
     <Header />
 
-    <main-display class="container" :meta="meta" :url="url">
+      <router-view>
 
-      <router-view class="shadow-container" :list="list" />
+      <!-- Title and Add Item Btn -->
+      <title-container>{{ pageTitle }}</title-container>
 
-    </main-display>
+      <!-- Search and Date Filter -->
+      <search :search-qr="filter.searchQr" />
 
-      <display-data :list="list" />
-<!--      <display-data />-->
+      <!-- Display data table -->
+      <router-view name="table" class="shadow-container" :list="list" />
+
+      <!-- Display page numbers -->
+      <page-numbers :meta="meta"/>
+
+      </router-view>
+
+
+    <!-- Temp display data -->
+    <display-data :list="list" class="container"/>
 
   </div>
 </template>
 
 <script>
+  // import MainContent from "@/components/MainContent";
+
   import Header from "@/components/Header";
+  import TitleContainer from "@/components/TitleContainer";
+  import Search from "@/components/Search";
+  import PageNumbers from "@/components/PageNumbers";
+
   import DisplayData from "@/components/DisplayData";
-  import MainDisplay from "@/components/MainDisplay";
   // import CountriesTable from "@/components/CountriesTable";
 
   export default {
     name: 'App',
     components: {
       Header,
-      DisplayData,
-      MainDisplay,
+      TitleContainer,
+      Search,
+      PageNumbers,
       // CountriesTable,
+      // MainContent,
+      DisplayData,
+
     },
     data() {
       return {
-        list: {},
-        meta: {},
+        list: {}, // ----- data for the table
+        meta: {}, // ----- metadata about page num and ect.
         baseUrl: "https://akademija.teltonika.lt/countries_api/api",
         url: "",
-        countryName: '',
+        pageTitle: '', // ----- decide title for the page
+        filter: {}, // ----- query for filtering data
       }
     },
     created() {
-      this.getData();
+      this.getData(); // fetch data when page loads
     },
     watch: {
-      $route: 'getData'
+      $route: 'getData' // fetch data again when route changes
     },
     methods: {
       getData(props) {
         // const baseUrl = "https://akademija.teltonika.lt/countries_api/api";
         let url = this.baseUrl + this.$route.path;
-        console.log(this.$route.path);
+        const route = this.$route.name;
 
-        if(this.$route.name === "country"){   // ---------- If country selected, get county name
-          const url = this.baseUrl + "/countries";
-          const id = this.$route.params.country_id;
-          this.$http.get(url)
-              .then(response => {
-                // console.log(id, response.data.data.find(item => item.id === parseInt(id)).attributes.name);
-                this.countryName = response.data.data.find(item => item.id === parseInt(id)).attributes.name;
-              }).catch(error => console.error(error));
+        switch (route) { // --------- declare page title
+          case "countries":
+            this.pageTitle = "Šalys";
+            break;
+          case "cities":
+            this.pageTitle = "Miestai";
+            break;
+          case "country":
+            this.$http.get(this.baseUrl + "/countries")
+                .then(response => {
+                  const id = this.$route.params.country_id;
+                  this.pageTitle = response.data.data.find(item => item.id === parseInt(id)).attributes.name;
+                }).catch(error => console.error(error));
+            break;
+          default:
+            break;
         }
 
         if (props) {
@@ -84,6 +113,7 @@
 
     --ff-opensans:'Open Sans', sans-serif;
     --ff-oswald: 'Oswald', sans-serif;
+    --fs-title: 4rem;
     --fw-bold: 600;
     --box-shadow: 0 0 10px #222222aa;
   }
@@ -116,4 +146,11 @@
    color: black;
  }
 
+  button {
+    background: none;
+    border:none;
+    font:inherit;
+    cursor: pointer;
+    border-radius: 4px;
+  }
 </style>

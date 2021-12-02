@@ -1,5 +1,7 @@
 <template>
+
   <div class="search-filter-container"> <!-- create a Container -->
+
     <div class="search-container shadow-container">
       <input type="text" id="search" name="search" v-model="searchQr">
       <button id="search-btn">
@@ -8,7 +10,9 @@
     </div>
 
     <input type="date" id="date-filter" class="shadow-container">
+
   </div>
+
 </template>
 
 <script>
@@ -31,6 +35,7 @@
     display: flex;
     padding: 0 .6em 0 0;
     width: 100%;
+    max-width: 100%;
     margin-right: 1rem;
   }
 
@@ -64,6 +69,7 @@
     color: var(--clr-grey);
     border: none;
     padding: 0 1em;
+    min-width: fit-content;
 
     font: inherit;
     font-family: 'Oswald', sans-serif;

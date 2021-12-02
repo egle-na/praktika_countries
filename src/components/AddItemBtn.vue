@@ -12,7 +12,7 @@
   export default {
     name: 'AddItemBtn',
     components: {ItemCard},
-    params: [ "type" ],
+    // params: [ "type" ],
     data() {
       return {
         isOpen: false

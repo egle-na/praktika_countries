@@ -15,19 +15,46 @@
         <td v-text="country.attributes.area" />
         <td v-text="country.attributes.population" />
         <td v-text="country.attributes.phone_code" />
-        <actions :id="country.id" :type="country.type" />
+        <actions :id="country.id" :type="country.type" @editItem="editItem" />
       </tr>
     </table>
+
+    <ItemCard :type="'edit'"
+              :item="itemToEdit"
+              v-if="editIsOpen"
+              @close="editIsOpen = false"
+    />
+
   </div>
 </template>
 
 <script>
   import Actions from "@/components/TableActions";
+  import ItemCard from "@/components/ItemCard";
+
+
 
   export default {
     name: "CountriesTable",
+    components: {
+      Actions,
+      ItemCard,
+    },
     props: [ "list" ],
-    components: { Actions }
+    data() {
+      return {
+        editIsOpen: false,
+        itemToEdit: {},
+      }
+    },
+    methods: {
+      editItem( data ) {
+        console.log("elp",data);
+        this.itemToEdit = this.list.find(item => item.id === data.id);
+        this.editIsOpen = true;
+
+      }
+    }
   }
 </script>
 

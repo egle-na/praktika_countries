@@ -4,6 +4,18 @@
     <div class="item-card shadow-container">
       <button id="close-btn" @click="$emit('close')">&times;</button>
       <h2>{{cardTitle}}</h2>
+
+<!--      <div v-if="item.id" class="form">-->
+<!--        <p>{{item.id}}</p>-->
+<!--        <p>{{item.attributes.name}}</p>-->
+<!--        <p>{{item.attributes.area}}</p>-->
+<!--        <p>{{item.attributes.population}}</p>-->
+<!--        <p>{{item.attributes.phone_code}}</p>-->
+<!--      </div>-->
+
+
+
+
     </div>
   </div>
 
@@ -11,7 +23,7 @@
 <script>
   export default {
     name: 'ItemCard',
-    props: [ "type" ],
+    props: [ "type", "item" ],
     computed: {
       cardTitle() {
         let title = "";

@@ -2,7 +2,7 @@
   <div>
 
     <button id="add-item-btn" class="shadow-container" @click="isOpen = true" >&plus;</button>
-    <ItemCard :type="'add'" v-show="isOpen" @close="isOpen = false"/>
+    <ItemCard :type="'add'"  v-if="isOpen" @close="isOpen = false"/>
 
   </div>
 </template>

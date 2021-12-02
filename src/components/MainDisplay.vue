@@ -2,20 +2,11 @@
   <div>
 
     <div class="title-container">
-      <h1 class="title">{{ routeName }}</h1>
-      <add-item-btn :type="'add'" />
+      <h1 class="title">{{ title }}</h1>  <!--  Title -->
+      <add-item-btn :type="'add'" />          <!--  Add Item Button -->
     </div>
 
-    <div class="search-filter-container"> <!-- create a Container -->
-      <div class="search-container shadow-container">
-        <input type="text" id="search" name="search" v-model="searchQr">
-        <button id="search-btn">
-          <img src="../assets/icons/search.svg" alt="search button">
-        </button>
-      </div>
-
-      <input type="date" id="date-filter" class="shadow-container">
-    </div>
+    <search :search-qr="searchQr" />          <!--  Search and Date Filter -->
 
     <slot class="shadow-container"></slot>
 
@@ -29,6 +20,7 @@
       <button>&gt;</button>
     </div>
 
+
     <!--    <Title/> <add-item />-->
     <!--    -->
     <!--    <search/> <date-filter/>-->
@@ -41,18 +33,27 @@
 
 <script>
   import AddItemBtn from "@/components/AddItemBtn";
+  import Search from "@/components/Search";
+  // import ItemCard from "@/components/ItemCard";
 
   export default {
     name: "MainDisplay",
-    components: {AddItemBtn},
+    components: {
+      Search,
+      AddItemBtn
+    },
     props: [ "meta" ],
     data() {
       return {
         searchQr: '',
+        title: ''
       }
     },
+    created() {
+      this.title = this.routeName;
+    },
     computed: {
-      routeName: function () {
+      routeName() {
         const route = this.$route.name;
 
         switch (route) {
@@ -62,11 +63,32 @@
           case "cities":
             return "Miestai";
 
+          case "country":
+            // console.log(this.countryName);
+            return this.countryName;
+
           default:
             break;
         }
 
         return "Kita";
+      },
+      countryName() {
+        // console.log(this.$parent.baseUrl);
+        let url = this.$parent.baseUrl + "/countries";
+        return this.getCountryName(url, this.$route.params.country_id);
+      },
+    },
+    methods: {
+      editItem(type, id) {
+        console.log(type,id);
+      },
+      getCountryName(url, id) {
+        this.$http.get(url)
+            .then(response => {
+              // console.log(id, response.data.data.find(item => item.id === parseInt(id)).attributes.name);
+              return response.data.data.find(item => item.id === parseInt(id)).attributes.name;
+            }).catch(error => console.error(error));
       }
     }
   }
@@ -86,55 +108,6 @@
     font-size: 4rem;
     font-weight: 400;
     font-family: var(--ff-oswald);
-  }
-
-  .search-filter-container {
-    display: flex;
-    margin-bottom: 1rem;
-  }
-
-  .search-container {
-    display: flex;
-    padding: 0 .6em 0 0;
-    width: 100%;
-    margin-right: 1rem;
-  }
-
-  #search {
-    background: var(--clr-light);
-    color: var(--clr-grey);
-    font: inherit;
-    font-weight: 600;
-
-    border: none;
-    border-radius: 5px;
-    width: 100%;
-    margin: 0;
-    padding: 1em 1.5em;
-  }
-
-  #search-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    transform: scale(1);
-    transition: transform 200ms;
-  }
-
-  #search-btn:hover {
-    transform: scale(1.2);
-  }
-
-  #date-filter {
-    background: none;
-    color: var(--clr-grey);
-    border: none;
-    padding: 0 1em;
-
-    font: inherit;
-    font-family: 'Oswald', sans-serif;
-    text-transform: uppercase;
-    cursor: pointer;
   }
 
   .page-numbers {

@@ -33,20 +33,42 @@
       return {
         list: {},
         meta: {},
-        url: "https://akademija.teltonika.lt/countries_api/api/countries",
+        baseUrl: "https://akademija.teltonika.lt/countries_api/api",
+        url: "",
+        countryName: '',
       }
     },
     created() {
-      this.getData(this.url);
+      this.getData();
+    },
+    watch: {
+      $route: 'getData'
     },
     methods: {
-      getData(url) {
-        // temp
+      getData(props) {
+        // const baseUrl = "https://akademija.teltonika.lt/countries_api/api";
+        let url = this.baseUrl + this.$route.path;
+        console.log(this.$route.path);
+
+        if(this.$route.name === "country"){   // ---------- If country selected, get county name
+          const url = this.baseUrl + "/countries";
+          const id = this.$route.params.country_id;
+          this.$http.get(url)
+              .then(response => {
+                // console.log(id, response.data.data.find(item => item.id === parseInt(id)).attributes.name);
+                this.countryName = response.data.data.find(item => item.id === parseInt(id)).attributes.name;
+              }).catch(error => console.error(error));
+        }
+
+        if (props) {
+          console.log("elp");
+        }
+
         this.$http.get( url )
           .then(response => {
             this.list = response.data.data;
             this.meta = response.data.meta;
-            console.log(this.meta.current_page)
+            // console.log(this.meta.current_page)
           })
           .catch(error => console.log(error))
       },

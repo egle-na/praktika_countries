@@ -2,7 +2,7 @@
   <div class="shadow-container">
     <p>{{list}}</p>
     <ul>
-      <li v-for="item in list" :key="item.id" ><a :href="item.relationships.cities.links.related">{{item.attributes.name}}</a></li>
+      <li v-for="item in list" :key="item.id" >{{item.attributes.name}}</li>
     </ul>
   </div>
 </template>

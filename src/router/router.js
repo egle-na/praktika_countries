@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 
 import CountriesTable from "@/components/CountriesTable";
 import CitiesTable from "@/components/CitiesTable";
+import PageNotFound from "@/components/PageNotFound";
 
 Vue.use(VueRouter);
 
@@ -20,17 +21,26 @@ const router = new VueRouter({
             component: CountriesTable,
             children: [
                 {
-                    path: 'countries/:country_id/cities',
+                    path: ':country_id/cities',
+                    name: 'country',
                     component: CitiesTable,
-
-                }
+                },
+                // {
+                //     path: 'countries/*',
+                //     component: PageNotFound,
+                // } // --------------------------------- ši šalis dar neturi pridėtų miestų
             ]
         },
         {
-            path: '*/cities',
+            path: '/cities',
             name: 'cities',
             component: CitiesTable,
 
+        },
+        {
+            path: '/*',
+            name: 'not-found',
+            component: PageNotFound,
         }
     ]
 })

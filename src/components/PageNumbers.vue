@@ -1,12 +1,15 @@
 <template>
   <div class="page-numbers">
-    <button>&lt;</button>
+
+    <button class="page-number">&lt;</button>
     <button v-for="index in meta.last_page"
             :key="index"
             v-text="index"
+            class="page-number"
             :class="{'current-page': meta.current_page === 1}"
-    />
-    <button>&gt;</button>
+    ></button>
+    <button class="page-number">&gt;</button>
+
   </div>
 </template>
 <script>
@@ -17,23 +20,27 @@
     }
   }
 </script>
-<style>
+<style scoped>
+
   .page-numbers {
-    margin: 2em auto 0;
+    margin: 1.5em auto 0;
     width: fit-content;
   }
 
-  button {
-    background: none;
-    border: none;
-    font: inherit;
-    cursor: pointer;
-    border-radius: 4px;
+  .page-number {
+    margin: 2px;
+  }
+
+  .page-number:hover {
+    background: #eaeaea;
   }
 
   .current-page {
-    background: #5C5C5C88;
+    background: var(--clr-grey);
     color: var(--clr-light);
+  }
+  .current-page:hover {
+    background: var(--clr-grey);
   }
 
 </style>

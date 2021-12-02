@@ -5,17 +5,17 @@
 
       <router-view>
 
-      <!-- Title and Add Item Btn -->
-      <title-container>{{ pageTitle }}</title-container>
+        <!-- Title and Add Item Btn -->
+        <title-container>{{ pageTitle }}</title-container>
 
-      <!-- Search and Date Filter -->
-      <search :search-qr="filter.searchQr" />
+        <!-- Search and Date Filter -->
+        <search :search-qr="filter.searchQr" />
 
-      <!-- Display data table -->
-      <router-view name="table" class="shadow-container" :list="list" />
+        <!-- Display data table -->
+        <router-view name="table" class="shadow-container" :list="list" />
 
-      <!-- Display page numbers -->
-      <page-numbers :meta="meta"/>
+        <!-- Display page numbers -->
+        <page-numbers :meta="meta"/>
 
       </router-view>
 
@@ -99,17 +99,18 @@
             this.meta = response.data.meta;
             // console.log(this.meta.current_page)
           })
-          .catch(error => console.log(error))
+          .catch(error => console.error(error.response.data.message))
       },
     },
   }
 </script>
 
 <style>
+
   :root {
     --clr-light: #ffffff;
     --clr-accent: #0054A6;
-    --clr-grey: #5C5C5C;
+    --clr-grey: rgba(92, 92, 92, 0.98);
 
     --ff-opensans:'Open Sans', sans-serif;
     --ff-oswald: 'Oswald', sans-serif;
@@ -142,8 +143,13 @@
    color: inherit;
  }
 
- a:hover {
+ a:hover,
+ a:focus {
    color: black;
+ }
+
+ a:focus {
+   outline: solid;
  }
 
   button {
@@ -153,4 +159,9 @@
     cursor: pointer;
     border-radius: 4px;
   }
+
+  button:focus {
+    outline: solid 2px;
+  }
+
 </style>

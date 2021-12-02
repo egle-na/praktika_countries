@@ -1,41 +1,31 @@
 <template>
   <div>
-    <table>
-      <tr class="table-lables">
 
-        <th>Pavadinimas</th>
-        <th>Užimamas Plotas</th>
-        <th>Gyventojų Skaičius</th>
-        <th>Miesto Pašto Kodas</th>
-        <th>Veiksmai</th>
+    <Table :headers="sendHeaders" :list="list" :link="'cities'" />
 
-      </tr>
-      <tr v-for="city in list" :key="city.id">
-
-        <td v-text="city.attributes.name" />
-        <td v-text="city.attributes.area" />
-        <td v-text="city.attributes.population" />
-        <td v-text="city.attributes.postal_code" />
-        <actions :id="city.id" :type="city.type" />
-
-      </tr>
-    </table>
   </div>
 </template>
 
 <script>
-  import Actions from "@/components/TableActions";
+  import Table from "@/components/Table";
 
   export default {
     name: "CitiesTable",
     components: {
-      Actions
+      Table,
     },
     props: [ "list" ],
-
+    data() {
+      return {
+        sendHeaders: [
+          {title: 'Užimamas Plotas', attr: 'area'},
+          {title: 'Gyventojų Skaičius', attr: 'population'},
+          {title: 'Miesto Pašto Kodas', attr: 'postal_code'},
+        ]
+      }
+    },
   }
 </script>
 
 <style scoped>
-
 </style>

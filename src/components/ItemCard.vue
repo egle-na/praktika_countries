@@ -13,25 +13,6 @@
 
         </form-component>
 
-<!--        <form class="item-form" action="#" method="post" @submit.prevent >-->
-
-<!--          <form-item >-->
-<!--            <template v-slot:label>Pavadinimas</template>-->
-<!--            <template :is="'input'" :name="'name'"></template>-->
-
-<!--            <label for="name">Pavadinimas</label>-->
-<!--            <input id="name" name="name" type="text" value="" required>-->
-
-<!--          </form-item>-->
-
-<!--          sendHeaders: [-->
-<!--          {title: 'Pavadinimas', attr: 'name'},-->
-<!--          {title: 'Užimamas Plotas', attr: 'area'},-->
-<!--          {title: 'Gyventojų Skaičius', attr: 'population'},-->
-<!--          {title: 'Šalies Tel. Kodas', attr: 'phone_code'},-->
-<!--          ]-->
-
-
           <!--            form item-->
           <!--            -->
           <!--            -->

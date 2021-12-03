@@ -3,13 +3,28 @@
   <div class="search-filter-container"> <!-- create a Container -->
 
     <div class="search-container shadow-container">
-      <input type="text" id="search" name="search" v-model="searchQr">
+      <input type="text" id="search" v-model="search" @keyup="sendSearch" @blur="sendSearch">
+      <slot name="search"></slot>
       <button id="search-btn">
         <img src="../assets/icons/search.svg" alt="search button">
       </button>
     </div>
 
-    <input type="date" id="date-filter" class="shadow-container">
+    <div>
+      <label class="date-label">Nuo:</label>
+      <input type="date"
+             class="date-filter shadow-container"
+             @input="setStartDate"
+             :max="maxStartDate">
+    </div>
+
+    <div>
+      <label class="date-label">Iki:</label>
+      <input type="date"
+             class="date-filter shadow-container"
+             @input="setEndDate"
+             :min="minEndDate">
+    </div>
 
   </div>
 
@@ -18,9 +33,48 @@
 <script>
   export default {
     name: 'Search',
-    props: {
-      searchQr: {}
-    }
+    props: [ 'query' ],
+    data() {
+      return {
+        search: '',
+        maxStartDate: '',
+        minEndDate: '',
+      }
+    },
+    // watch: {
+    //   query() {
+    //     this.search = this.query
+    //   },
+    // },
+    methods: {
+      sendSearch(event) {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          this.$emit('sendParams', 'search' , event.target.value);
+          console.log(event.target.value);
+        }, 400)
+      },
+      setStartDate(event) {
+        const val = event.target.value;
+        this.minEndDate = val;
+        this.$emit('sendParams', 'start_date', val)
+      },
+      setEndDate(event) {
+        const val = event.target.value;
+        this.maxStartDate = val;
+        this.$emit('sendParams', 'end_date', val)
+      },
+    },
+    // computed: {
+    //   search: {
+    //     get() {
+    //       return this.query;
+    //     },
+    //     set() {
+    //       return this.query
+    //     }
+    //   }
+    // }
   }
 </script>
 
@@ -29,6 +83,14 @@
   .search-filter-container {
     display: flex;
     margin-bottom: 1rem;
+  }
+
+  .search-filter-container div {
+    margin-right: 1rem;
+  }
+
+  .search-filter-container div:last-child {
+    margin-right: 0;
   }
 
   .search-container {
@@ -64,17 +126,34 @@
     transform: scale(1.2);
   }
 
-  #date-filter {
+  .date-filter {
     background: none;
     color: var(--clr-grey);
     border: none;
     padding: 0 1em;
     min-width: fit-content;
+    height: 100%;
 
     font: inherit;
     font-family: 'Oswald', sans-serif;
     text-transform: uppercase;
     cursor: pointer;
+  }
+
+  .date-label {
+    color: var(--clr-grey);
+    font-family: var(--ff-oswald);
+    font-size: .6rem;
+    text-transform: uppercase;
+    text-shadow: 0 0 2px var(--clr-light);
+    letter-spacing: .16em;
+    border-radius: 3px;
+
+    position: absolute;
+    margin-top: -.5em;
+    margin-left: 1rem;
+    padding: 0 .4em;
+    background: var(--clr-light);
   }
 
   button {

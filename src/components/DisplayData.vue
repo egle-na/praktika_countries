@@ -1,5 +1,5 @@
 <template>
-  <div class="shadow-container">
+  <div class="shadow-container" v-if="!errors" >
     <p>{{list}}</p>
     <ul>
       <li v-for="item in list" :key="item.id" >{{item.attributes.name}}</li>
@@ -9,8 +9,13 @@
 
 <script>
   export default {
-    name: "MainData",
+    name: "DisplayData",
     props: [ "list" ],
+    computed: {
+      errors() {
+        return this.list.error;
+      }
+    }
   }
 </script>
 

@@ -1,7 +1,11 @@
 <template>
   <div>
 
-    <Table :headers="sendHeaders" :list="list" :link="'cities'" />
+    <Table :headers="sendHeaders" :list="list" :link="'cities'" v-if="!errors"/>
+
+    <div v-else class="error">
+      <p>Error: {{ errors }}</p>
+    </div>
 
   </div>
 </template>
@@ -24,6 +28,14 @@
         ]
       }
     },
+    // watch: {
+    //   list: { immediate: true, deep: true,},
+    // },
+    computed: {
+      errors() {
+        return this.list.error;
+      }
+    }
   }
 </script>
 

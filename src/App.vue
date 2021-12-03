@@ -9,7 +9,7 @@
         <title-container>{{ pageTitle }}</title-container>
 
         <!-- Search and Date Filter -->
-        <search :search-qr="filter.searchQr" />
+        <search :query="params.search" @sendParams="setParams" />
 
         <!-- Display data table -->
         <router-view name="table" class="shadow-container" :list="list" />
@@ -47,28 +47,57 @@
       // CountriesTable,
       // MainContent,
       DisplayData,
-
     },
+
     data() {
       return {
+        baseUrl: "https://akademija.teltonika.lt/countries_api/api",
         list: {}, // ----- data for the table
         meta: {}, // ----- metadata about page num and ect.
-        baseUrl: "https://akademija.teltonika.lt/countries_api/api",
-        url: "",
+        // url: "",
         pageTitle: '', // ----- decide title for the page
-        filter: {}, // ----- query for filtering data
+        defaultParams: { page: 1, /*per_page: 10,*/ start_date: '', end_date: '', search: ''},
+        params: { ...this.defaultParams },// --- query for filtering data initiated with default
       }
     },
+
     created() {
       this.getData(); // fetch data when page loads
+      this.getPageTitle();
     },
+
     watch: {
-      $route: 'getData' // fetch data again when route changes
+      $route() { // fetch data again when the route changes
+        this.params = {...this.defaultParams};
+        this.getData();
+        this.getPageTitle();
+      },
     },
+
     methods: {
-      getData(props) {
-        // const baseUrl = "https://akademija.teltonika.lt/countries_api/api";
+      getData() {
         let url = this.baseUrl + this.$route.path;
+
+        this.$http.get( url , { params: this.params})
+          .then(response => {
+            this.list = response.data.data;
+            this.meta = response.data.meta;
+            // this.errors = '';
+            // console.log(this.meta.current_page)
+          })
+          .catch(error => {
+            console.error(error.response.data.message);
+            this.list = {};
+            this.list.error = error.response.data.message;
+          })
+      },
+
+      setParams(name, value) {
+        this.params[name] = value;
+        this.getData();
+      },
+
+      getPageTitle(){
         const route = this.$route.name;
 
         switch (route) { // --------- declare page title
@@ -79,27 +108,14 @@
             this.pageTitle = "Miestai";
             break;
           case "country":
-            this.$http.get(this.baseUrl + "/countries")
+            this.$http.get(this.baseUrl + "/countries/" + this.$route.params.country_id)
                 .then(response => {
-                  const id = this.$route.params.country_id;
-                  this.pageTitle = response.data.data.find(item => item.id === parseInt(id)).attributes.name;
+                  this.pageTitle = response.data.data.attributes.name;
                 }).catch(error => console.error(error));
             break;
           default:
             break;
         }
-
-        if (props) {
-          console.log("elp");
-        }
-
-        this.$http.get( url )
-          .then(response => {
-            this.list = response.data.data;
-            this.meta = response.data.meta;
-            // console.log(this.meta.current_page)
-          })
-          .catch(error => console.error(error.response.data.message))
       },
     },
   }
@@ -128,6 +144,7 @@
 
  .container {
    width: 90%;
+   max-width: 1200px;
    margin: 0 auto 2em;
    padding: 1em;
  }

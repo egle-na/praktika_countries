@@ -4,8 +4,8 @@
 
     <img src="../assets/teltonika_logo.png" alt="">
 
-    <router-link to="/countries" class="tab">Šalys</router-link>
-    <router-link to="/cities" class="tab">Miestai</router-link>
+    <router-link :to="{ name: 'countries'}" exact class="tab">Šalys</router-link>
+    <router-link to="cities" class="tab">Miestai</router-link>
 
     </div>
   </header>

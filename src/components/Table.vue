@@ -4,23 +4,21 @@
     <table>
       <!-- Table Header -->
       <tr class="table-labels">
-        <th>Pavadinimas</th>
+<!--        <th>Pavadinimas</th>-->
         <th v-for="(label, index) in headers" :key="index" v-text="label.title" />
         <th>Veiksmai</th>
       </tr>
 
       <!-- Table Body -->
-      <tr v-for="(item) in list" :key="item.id">
+      <tr v-for="item in list" :key="item.id">
 
         <!-- name column -->
-        <td v-if="type === 'countries'">
+        <td v-if="linkNeeded">
           <router-link :to="`/countries/${item.id}/cities`" v-text="item.attributes.name" />
         </td>
-        <td v-else v-text="item.attributes.name" />
-        <!-- /end name column-->
 
         <!-- custom columns -->
-        <td v-for="({attr}, index) in headers" :key="index" v-text="item.attributes[attr]" />
+        <td v-for="({attr}, index) in thisHeaders" :key="index" v-text="item.attributes[attr]" />
 
         <!-- actions column -->
         <actions :id="item.id" :type="item.type" @editItem="editItem" />
@@ -30,6 +28,7 @@
 
     <ItemCard :type="'edit'"
               :item="itemToEdit"
+              :inputs="headers"
               v-if="editIsOpen"
               @close="editIsOpen = false"
     />
@@ -52,7 +51,18 @@
       return {
         editIsOpen: false,
         itemToEdit: {},
+        thisHeaders: [...this.headers],
+        linkNeeded: false,
       }
+    },
+    created() {
+        if (this.thisHeaders[0].link) {
+          this.thisHeaders.shift();
+          this.linkNeeded = true;
+        }
+        else {
+          this.linkNeeded = false;
+        }
     },
     methods: {
       editItem( data ) {

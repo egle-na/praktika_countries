@@ -4,7 +4,7 @@
     <h1 class="title">
       <slot />
     </h1>  <!--  Title -->
-    <add-item-btn/>          <!--  Add Item Button -->
+    <add-item-btn/>  <!--  Add Item Button -->
 
   </div>
 </template>

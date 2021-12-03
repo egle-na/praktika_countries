@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <Table :headers="sendHeaders" :list="list" :link="'cities'" v-if="!errors"/>
+    <Table :headers="listParams.cities" :list="list" :link="'cities'" v-if="!errors"/>
 
     <div v-else class="error">
       <p>Error: {{ errors }}</p>
@@ -18,7 +18,7 @@
     components: {
       Table,
     },
-    props: [ "list" ],
+    props: [ 'list', 'listParams' ],
     data() {
       return {
         sendHeaders: [

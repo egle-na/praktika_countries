@@ -1,6 +1,5 @@
 <template>
   <div class="item-card--container">
-
     <div class="backdrop" @click="$emit('close')" />
 
     <div class="item-card shadow-container">
@@ -8,49 +7,35 @@
       <div class="item-card--content">
         <h2 class="card-title">{{ cardTitle }}</h2>
 
+<!--        <form-component v-if="type === 'edit'" :names="inputs" :item="item" >-->
 
-        <form-component>
+        <form-component v-if="type === 'edit'" :names="inputs" :item="item" >
+          <form-item v-for="prop in inputs"
+                     :key="prop.attr"
+                     :attr="prop.attr"
+                     :type="prop.type"
+                     :label="prop.title"
+                     :value="item.attributes[prop.attr]"
+          />
+        </form-component >
 
-        </form-component>
-
-          <!--            form item-->
-          <!--            -->
-          <!--            -->
-          <!--            <label for="area">Užimamas plotas</label>-->
-          <!--            <input id="area" name="area" type="number" value="" required>-->
-          <!--            <label for="population">Gyventojų skaičius</label>-->
-          <!--            <input id="population" name="population" type="number" value="" required>-->
-          <!--            <label for="postcode">Miesto Pašto Kodas</label>-->
-          <!--            <input id="postcode" name="postcode" type="text" value="" required>-->
-          <!--            <input type="hidden" name="id" value="">-->
-          <!--            <input type="hidden" name="country_id" value="">-->
-<!--          <button type="submit" class="submit-btn shadow-container">Saugoti</button>-->
-
-<!--        </form>-->
+        <form-component v-else />
 
       </div>
+
     </div>
-
-  <!--      <div v-if="item.id" class="form">-->
-  <!--        <p>{{item.id}}</p>-->
-  <!--        <p>{{item.attributes.name}}</p>-->
-  <!--        <p>{{item.attributes.area}}</p>-->
-  <!--        <p>{{item.attributes.population}}</p>-->
-  <!--        <p>{{item.attributes.phone_code}}</p>-->
-  <!--      </div>-->
-
   </div>
 </template>
 
 <script>
-  // import FormItem from "@/components/FormItem";
+  import FormItem from "@/components/FormItem";
   import FormComponent from "@/components/FormComponent";
 
   export default {
     name: 'ItemCard',
-    props: [ "type", "item" ],
+    props: [ "type", "item", 'inputs'],
     components: {
-      // FormItem,
+      FormItem,
       FormComponent,
     },
     computed: {
@@ -63,7 +48,7 @@
           title = "Pridėti ";
         }
 
-        if (this.$route.name === "cities") {
+        if (this.$route.name === "cities" || this.$route.name === "country") {
           title += "Miestą";
         } else if (this.$route.name === "countries"){
           title += "Šalį";

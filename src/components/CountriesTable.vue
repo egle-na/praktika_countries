@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <Table :headers="sendHeaders" :list="list" :type="'countries'" />
+    <Table :headers="listParams.countries" :list="list" :type="'countries'" />
 
   </div>
 </template>
@@ -14,7 +14,7 @@
     components: {
       Table,
     },
-    props: [ "list" ],
+    props: [ "list", 'listParams' ],
     data() {
       return {
         sendHeaders: [

@@ -1,29 +1,41 @@
 <template>
   <div>
 
-    <label for="name">Pavadinimas</label>
-    <input id="name" name="name" type="text" value="" required>
-
-    <label for="area">Užimamas plotas</label>
-    <input id="area" name="area" type="number" value="" required>
-    <label for="population">Gyventojų skaičius</label>
-    <input id="population" name="population" type="number" value="" required>
-    <label for="postcode">Miesto Pašto Kodas</label>
-    <input id="postcode" name="postcode" type="text" value="" required>
-    <input type="hidden" name="id" value="">
-    <input type="hidden" name="country_id" value="">
+    <label :for="attr">{{ label }}</label>
+    <input :id="attr" :name="attr" :type="type" :value="value" required>
 
   </div>
 </template>
 
 <script>
   export default {
-    name: "FormItem"
+    name: "FormItem",
+    props: [ 'attr', 'type', 'label', 'value' ]
   }
 </script>
 
 <style scoped>
 
+  form label {
+    position:relative;
+    bottom: -.6em;
+    letter-spacing: .04em;
+    font-size: .7rem;
+    background: #fff;
+    width: fit-content;
+    margin: 0 2em;
+    padding: .3em;
+    z-index: 1;
+  }
+
+  form input,
+  #country-select {
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+    padding: .9em;
+    margin-bottom: 1.3em;
+    width: 100%;
+  }
 
 
 </style>

@@ -12,7 +12,7 @@
         <search :query="params.search" @sendParams="setParams" />
 
         <!-- Display data table -->
-        <router-view name="table" class="shadow-container" :list="list" />
+        <router-view name="table" class="shadow-container" :list="list" :listParams="listParams" />
 
         <!-- Display page numbers -->
         <page-numbers :meta="meta"/>
@@ -58,6 +58,21 @@
         pageTitle: '', // ----- decide title for the page
         defaultParams: { page: 1, /*per_page: 10,*/ start_date: '', end_date: '', search: ''},
         params: { ...this.defaultParams },// --- query for filtering data initiated with default
+
+        listParams: {
+          cities: [
+            {title: 'Pavadinimas', attr: 'name', type: 'text', link: false },
+            {title: 'Užimamas Plotas', attr: 'area', type: 'number' },
+            {title: 'Gyventojų Skaičius', attr: 'population', type: 'number' },
+            {title: 'Miesto Pašto Kodas', attr: 'postal_code', type: 'text' },
+          ],
+          countries: [
+            {title: 'Pavadinimas', attr: 'name', type: 'text', link: true },
+            {title: 'Užimamas Plotas', attr: 'area', type: 'number' },
+            {title: 'Gyventojų Skaičius', attr: 'population', type: 'number' },
+            {title: 'Šalies Tel. Kodas', attr: 'phone_code', type: 'text' },
+          ]
+        },
       }
     },
 

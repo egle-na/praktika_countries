@@ -15,14 +15,6 @@
                         @reloadTable="dataSubmitted"
         >
 <!--                        v-if="type === 'edit'"-->
-<!--
-<form-item v-for="prop in inputs"-->
-<!--                     :key="prop.attr"-->
-<!--                     :attr="prop.attr"-->
-<!--                     :type="prop.type"-->
-<!--                     :label="prop.title"-->
-<!--                     :value="item.attributes[prop.attr]"-->
-<!--          />-->
         </form-component >
 
 <!--        <form-component v-else :names="inputs" />-->

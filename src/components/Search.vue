@@ -1,25 +1,27 @@
 <template>
+  <div class="search-filter-container">
 
-  <div class="search-filter-container"> <!-- create a Container -->
-
+    <!-- Search Input -->
     <div class="search-container shadow-container">
       <input type="text" id="search" v-model="search" @keyup="sendSearch" @blur="sendSearch">
-      <slot name="search"></slot>
-      <button id="search-btn">
-        <img src="../assets/icons/search.svg" alt="search button">
+      <button id="search-btn" @click="clearSearch" @focus="selectAction">
+        <img v-show="!search" src="../assets/icons/search.svg" alt="search button">
+        <span v-show="search">&times;</span>
       </button>
     </div>
 
+    <!-- Start Date Filter -->
     <div>
-      <label class="date-label">Nuo:</label>
+      <label class="date-label" :class="{'has-value' : minEndDate}">Nuo:</label>
       <input type="date"
              class="date-filter shadow-container"
              @input="setStartDate"
              :max="maxStartDate">
     </div>
 
+    <!-- End Date Filter -->
     <div>
-      <label class="date-label">Iki:</label>
+      <label class="date-label" :class="{'has-value' : maxStartDate}">Iki:</label>
       <input type="date"
              class="date-filter shadow-container"
              @input="setEndDate"
@@ -27,7 +29,6 @@
     </div>
 
   </div>
-
 </template>
 
 <script>
@@ -41,17 +42,17 @@
         minEndDate: '',
       }
     },
-    // watch: {
-    //   query() {
-    //     this.search = this.query
-    //   },
-    // },
+    watch: {
+      $route() {
+        this.search = '';
+      }
+    },
     methods: {
       sendSearch(event) {
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
           this.$emit('sendParams', 'search' , event.target.value);
-          console.log(event.target.value);
+          // console.log(event.target.value);
         }, 400)
       },
       setStartDate(event) {
@@ -64,21 +65,20 @@
         this.maxStartDate = val;
         this.$emit('sendParams', 'end_date', val)
       },
+      selectAction(event) {
+        if(this.search === '') {
+          event.target.parentNode.childNodes[0].focus();
+        }
+      },
+      clearSearch(event) {
+        this.search = '';
+        event.target.parentNode.childNodes[0].focus();
+      }
     },
-    // computed: {
-    //   search: {
-    //     get() {
-    //       return this.query;
-    //     },
-    //     set() {
-    //       return this.query
-    //     }
-    //   }
-    // }
   }
 </script>
 
-<style>
+<style scoped>
 
   .search-filter-container {
     display: flex;
@@ -94,8 +94,9 @@
   }
 
   .search-container {
+    position: relative;
     display: flex;
-    padding: 0 .6em 0 0;
+    /*padding: 0 .6em 0 0;*/
     width: 100%;
     max-width: 100%;
     margin-right: 1rem;
@@ -115,14 +116,23 @@
   }
 
   #search-btn {
+    position: absolute;
+    right: .5rem;
+    height: 100%;
     background: none;
     border: none;
     cursor: pointer;
+  }
+
+  #search-btn span {
+    color: #a9a9a9;
+    font-size: 2rem;
+    margin: 0;
     transform: scale(1);
     transition: transform 200ms;
   }
 
-  #search-btn:hover {
+  #search-btn:hover span {
     transform: scale(1.2);
   }
 
@@ -156,12 +166,8 @@
     background: var(--clr-light);
   }
 
-  button {
-    background: none;
-    border: none;
-    font: inherit;
-    cursor: pointer;
-    border-radius: 4px;
+  .has-value {
+    color: var(--clr-accent)
   }
 
 </style>

@@ -2,10 +2,16 @@
   <header>
     <div class="container">
 
-    <img src="../assets/teltonika_logo.png" alt="">
+    <img src="../assets/teltonika_logo.png" alt=""> <!-- Teltonika logo -->
 
     <router-link :to="{ name: 'countries'}" exact class="tab">Šalys</router-link>
-    <router-link to="cities" class="tab">Miestai</router-link>
+    <router-link to="/countries/cities" class="tab">Miestai</router-link>
+    <router-link v-show="$route.params.country_id"
+                 to="/"
+                 class="tab router-link-active">
+        <slot>Šalis</slot>
+    </router-link>
+      <!--       :to="{ name: 'country' }" exact-->
 
     </div>
   </header>
@@ -13,14 +19,15 @@
 
 <script>
   export default {
-    name: "Header"
+    name: "Header",
   }
 </script>
 
 <style scoped>
   header {
-    /*position: sticky;*/
-    /*top: 0;*/
+    position: sticky;
+    top: 0;
+    z-index: 1;
     background: var(--clr-accent);
     margin-bottom: 2em;
   }
@@ -41,12 +48,16 @@
   .tab {
     background: #ffffffbb;
     padding: .8em 1.5em .3em;
-    /*margin-bottom: 0;*/
+    margin-right: .1em;
     border-radius: 10px 10px 0 0;
 
     color: var(--clr-grey);
     font-weight: 600;
     bottom: .3em;
+  }
+
+  .tab:focus {
+    color: var(--clr-accent);
   }
 
   .router-link-active {

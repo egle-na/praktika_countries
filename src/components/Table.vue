@@ -23,6 +23,7 @@
         <!-- actions column -->
         <actions :id="item.id"
                  :type="item.type"
+                 :item="item"
                  @editItem="editItem"
                  @reloadTable="$emit('reloadTable')"
         />

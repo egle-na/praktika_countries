@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 
-    <Header />
+    <Header>{{pageTitle}}</Header>
 
     <router-view>
 
@@ -22,7 +22,7 @@
       <router-view name="table" class="shadow-container" :list="list" :listParams="listParams" @reloadTable="getData"/>
 
       <!-- Display page numbers -->
-      <page-numbers :meta="meta"/>
+      <page-numbers :meta="meta" @setParams="setParams"/>
 
     </router-view>
 
@@ -37,25 +37,19 @@
 <!--                 @actionComplete="showMessage"-->
 
     <message-card />
-    <!-- Temp display data -->
-<!--    <display-data :list="list" class="container"/>-->
 
   </div>
 </template>
 
 <script>
-  // import MainContent from "@/components/MainContent";
-
   import Header from "@/components/Header";
+  import AddItemBtn from "@/components/AddItemBtn";
   import TitleContainer from "@/components/TitleContainer";
   import Search from "@/components/Search";
   import PageNumbers from "@/components/PageNumbers";
 
-  // import DisplayData from "@/components/DisplayData";
   import ItemCard from "@/components/ItemCard";
-  import AddItemBtn from "@/components/AddItemBtn";
   import MessageCard from "@/components/MessageCard";
-  // import CountriesTable from "@/components/CountriesTable";
 
   export default {
     name: 'App',
@@ -67,9 +61,6 @@
       TitleContainer,
       Search,
       PageNumbers,
-      // CountriesTable,
-      // MainContent,
-      // DisplayData,
     },
 
     data() {
@@ -79,10 +70,10 @@
         params: { ...this.defaultParams },// --- query for filtering data initiated with default
 
         list: {}, // ----- data for the table
-        meta: {}, // ----- metadata about page num and ect.
+        meta: {}, // ----- metadata about page num, ect.
 
         pageTitle: '', // ----- decide title for the page
-        listParams: [], // ---- current page list parameters
+        listParams: [], // ---- current page data parameters
 
         allListParams: {
           cities: [
@@ -108,7 +99,7 @@
     },
 
     watch: {
-      $route() { // fetch data again when the route changes
+      $route() { // fetch new data when the route changes
         this.params = {...this.defaultParams};
         this.getData();
         this.getPageTitle();
@@ -123,8 +114,6 @@
           .then(response => {
             this.list = response.data.data;
             this.meta = response.data.meta;
-            // this.errors = '';
-            // console.log(this.meta.current_page)
           })
           .catch(error => {
             console.error(error.response.data.message);

@@ -8,9 +8,7 @@
            required
            @focus="isFocused = true"
            @input="$emit('inputValue', attr, newValue )"
-           @blur="isFocused = true"> <!-- when true value disappears after lose focus -->
-<!--           :value="value"-->
-<!--          :id="attr" -->
+           @blur="isFocused = false"> <!-- when false, value disappears after losing focus -->
   </div>
 </template>
 
@@ -60,6 +58,5 @@
   .selected {
     color: var(--clr-accent);
   }
-
 
 </style>

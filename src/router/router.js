@@ -25,16 +25,20 @@ const router = new VueRouter({
             },
         },
         {
-            path: '*/cities',
+            path: '/countries/cities',
             name: 'cities',
             components: {
                 default: MainContent,
-                table: CitiesTable},
+                table: CitiesTable
+            },
             children: [
                 {
                     path: '/countries/:country_id/cities',
                     name: 'country',
-                    component: CitiesTable,
+                    components: {
+                        default: MainContent,
+                        table: CitiesTable
+                    },
                 },
                 // {
                 //     path: 'countries/*',

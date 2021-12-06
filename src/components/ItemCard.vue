@@ -9,17 +9,23 @@
 
 <!--        <form-component v-if="type === 'edit'" :names="inputs" :item="item" >-->
 
-        <form-component v-if="type === 'edit'" :names="inputs" :item="item" >
-          <form-item v-for="prop in inputs"
-                     :key="prop.attr"
-                     :attr="prop.attr"
-                     :type="prop.type"
-                     :label="prop.title"
-                     :value="item.attributes[prop.attr]"
-          />
+        <form-component :names="inputs"
+                        :item="item"
+                        :type="type"
+                        @reloadTable="dataSubmitted"
+        >
+<!--                        v-if="type === 'edit'"-->
+<!--
+<form-item v-for="prop in inputs"-->
+<!--                     :key="prop.attr"-->
+<!--                     :attr="prop.attr"-->
+<!--                     :type="prop.type"-->
+<!--                     :label="prop.title"-->
+<!--                     :value="item.attributes[prop.attr]"-->
+<!--          />-->
         </form-component >
 
-        <form-component v-else />
+<!--        <form-component v-else :names="inputs" />-->
 
       </div>
 
@@ -28,14 +34,14 @@
 </template>
 
 <script>
-  import FormItem from "@/components/FormItem";
+  // import FormItem from "@/components/FormItem";
   import FormComponent from "@/components/FormComponent";
 
   export default {
     name: 'ItemCard',
     props: [ "type", "item", 'inputs'],
     components: {
-      FormItem,
+      // FormItem,
       FormComponent,
     },
     computed: {
@@ -55,7 +61,14 @@
         }
 
         return title;
-      }
+      },
+    },
+    methods: {
+        dataSubmitted() {
+          this.$emit('reloadTable');
+          this.$emit('close');
+
+        }
     }
   }
 </script>
@@ -97,7 +110,7 @@
 
   .item-card--content{
     padding: 1em;
-    /*height: 100%;*/
+    height: 85%;
   }
 
   #close-btn {
@@ -105,6 +118,7 @@
     color: var(--clr-grey);
     line-height: .8;
     float: right;
+
     padding-top: 0;
     padding-bottom: 0;
   }
@@ -112,10 +126,13 @@
   .card-title {
     color: var(--clr-grey);
     font-family: var(--ff-oswald);
-    font-size: 1.5rem;
+    font-size: 1.7rem;
+    /*line-height: 1.6;*/
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-top: .5em ;
+    margin-bottom: .5em ;
   }
 
 </style>

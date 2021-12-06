@@ -1,20 +1,40 @@
 <template>
   <div>
 
-    <label :for="attr">{{ label }}</label>
-    <input :id="attr" :name="attr" :type="type" :value="value" required>
-
+    <label :for="attr" :class="{'selected': isFocused}">{{ label }} </label>
+    <input :name="attr"
+           :type="type"
+           v-model="newValue"
+           required
+           @focus="isFocused = true"
+           @input="$emit('inputValue', attr, newValue )"
+           @blur="isFocused = true"> <!-- when true value disappears after lose focus -->
+<!--           :value="value"-->
+<!--          :id="attr" -->
   </div>
 </template>
 
 <script>
   export default {
     name: "FormItem",
-    props: [ 'attr', 'type', 'label', 'value' ]
+    props: [ 'attr', 'type', 'label', 'value' ],
+    data() {
+      return {
+        isFocused: false,
+        newValue: '',
+      }
+    },
+    created() {
+      this.newValue = this.value;
+    }
   }
 </script>
 
 <style scoped>
+
+  div {
+    height: fit-content;
+  }
 
   form label {
     position:relative;
@@ -28,13 +48,17 @@
     z-index: 1;
   }
 
-  form input,
-  #country-select {
+  form input {
+    color: var(--clr-grey);
     border: 1px solid #c4c4c4;
     border-radius: 5px;
     padding: .9em;
-    margin-bottom: 1.3em;
+    /*margin-bottom: 1.3em;*/
     width: 100%;
+  }
+
+  .selected {
+    color: var(--clr-accent);
   }
 
 

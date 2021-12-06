@@ -35,6 +35,14 @@
       deleteItem(type, id) {
         this.$emit("deleteItem", type, id);
         console.log("delete", type, id);
+
+        const url = `https://akademija.teltonika.lt/countries_api/api${this.$route.path}/${id}`;
+        this.$http.delete(url)
+          .then(response => {
+            console.log(response.message);
+            this.$emit('reloadTable')
+          })
+          .catch(error => console.error(error))
       },
       editItem(type, id) {
         this.$emit("editItem", type, id);

@@ -1,18 +1,14 @@
 <template>
   <div>
 
-    <button id="add-item-btn" class="shadow-container" @click="isOpen = true" >&plus;</button>
-    <ItemCard :type="'add'"  v-if="isOpen" @close="isOpen = false"/>
+    <button id="add-item-btn" class="shadow-container" @click="$emit('openItemCard')" >&plus;</button>
 
   </div>
 </template>
 <script>
-  import ItemCard from "@/components/ItemCard";
 
   export default {
     name: 'AddItemBtn',
-    components: {ItemCard},
-    // params: [ "type" ],
     data() {
       return {
         isOpen: false

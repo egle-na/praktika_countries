@@ -21,7 +21,11 @@
         <td v-for="({attr}, index) in thisHeaders" :key="index" v-text="item.attributes[attr]" />
 
         <!-- actions column -->
-        <actions :id="item.id" :type="item.type" @editItem="editItem" />
+        <actions :id="item.id"
+                 :type="item.type"
+                 @editItem="editItem"
+                 @reloadTable="$emit('reloadTable')"
+        />
 
       </tr>
     </table>
@@ -31,6 +35,7 @@
               :inputs="headers"
               v-if="editIsOpen"
               @close="editIsOpen = false"
+              @reloadTable="$emit('reloadTable')"
     />
 
   </div>

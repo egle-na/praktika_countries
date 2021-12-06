@@ -1,7 +1,11 @@
 <template>
   <div>
 
-    <Table :headers="listParams.cities" :list="list" :link="'cities'" v-if="!errors"/>
+    <Table :headers="listParams"
+           :list="list"
+           :link="'cities'"
+           v-if="!errors"
+           @reloadTable="$emit('reloadTable')"/>
 
     <div v-else class="error">
       <p>Error: {{ errors }}</p>

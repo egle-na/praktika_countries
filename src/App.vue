@@ -3,25 +3,42 @@
 
     <Header />
 
-      <router-view>
+    <router-view>
 
-        <!-- Title and Add Item Btn -->
-        <title-container>{{ pageTitle }}</title-container>
-
-        <!-- Search and Date Filter -->
-        <search :query="params.search" @sendParams="setParams" />
-
-        <!-- Display data table -->
-        <router-view name="table" class="shadow-container" :list="list" :listParams="listParams" />
-
-        <!-- Display page numbers -->
-        <page-numbers :meta="meta"/>
-
-      </router-view>
+      <!-- Title and Add Item Btn -->
+      <title-container>
+        <template v-slot:title >{{ pageTitle }}</template>
+        <template v-slot:btn >
+          <add-item-btn @openItemCard="itemCardIsOpen = true"/>
+        </template>
 
 
+      </title-container>
+
+      <!-- Search and Date Filter -->
+      <search :query="params.search" @sendParams="setParams" />
+
+      <!-- Display data table -->
+      <router-view name="table" class="shadow-container" :list="list" :listParams="listParams" @reloadTable="getData"/>
+
+      <!-- Display page numbers -->
+      <page-numbers :meta="meta"/>
+
+    </router-view>
+
+
+      <!-- Add Item Card -->
+      <item-card v-if="itemCardIsOpen"
+                 :type="'add'"
+                 :inputs="listParams"
+                 @close="itemCardIsOpen = false"
+                 @reloadTable="getData"
+      />
+<!--                 @actionComplete="showMessage"-->
+
+    <message-card />
     <!-- Temp display data -->
-    <display-data :list="list" class="container"/>
+<!--    <display-data :list="list" class="container"/>-->
 
   </div>
 </template>
@@ -34,32 +51,40 @@
   import Search from "@/components/Search";
   import PageNumbers from "@/components/PageNumbers";
 
-  import DisplayData from "@/components/DisplayData";
+  // import DisplayData from "@/components/DisplayData";
+  import ItemCard from "@/components/ItemCard";
+  import AddItemBtn from "@/components/AddItemBtn";
+  import MessageCard from "@/components/MessageCard";
   // import CountriesTable from "@/components/CountriesTable";
 
   export default {
     name: 'App',
     components: {
+      MessageCard,
+      AddItemBtn,
+      ItemCard,
       Header,
       TitleContainer,
       Search,
       PageNumbers,
       // CountriesTable,
       // MainContent,
-      DisplayData,
+      // DisplayData,
     },
 
     data() {
       return {
         baseUrl: "https://akademija.teltonika.lt/countries_api/api",
-        list: {}, // ----- data for the table
-        meta: {}, // ----- metadata about page num and ect.
-        // url: "",
-        pageTitle: '', // ----- decide title for the page
         defaultParams: { page: 1, /*per_page: 10,*/ start_date: '', end_date: '', search: ''},
         params: { ...this.defaultParams },// --- query for filtering data initiated with default
 
-        listParams: {
+        list: {}, // ----- data for the table
+        meta: {}, // ----- metadata about page num and ect.
+
+        pageTitle: '', // ----- decide title for the page
+        listParams: [], // ---- current page list parameters
+
+        allListParams: {
           cities: [
             {title: 'Pavadinimas', attr: 'name', type: 'text', link: false },
             {title: 'Užimamas Plotas', attr: 'area', type: 'number' },
@@ -73,6 +98,7 @@
             {title: 'Šalies Tel. Kodas', attr: 'phone_code', type: 'text' },
           ]
         },
+        itemCardIsOpen: false,
       }
     },
 
@@ -118,11 +144,14 @@
         switch (route) { // --------- declare page title
           case "countries":
             this.pageTitle = "Šalys";
+            this.listParams = this.allListParams.countries;
             break;
           case "cities":
             this.pageTitle = "Miestai";
+            this.listParams = this.allListParams.cities;
             break;
           case "country":
+            this.listParams = this.allListParams.cities;
             this.$http.get(this.baseUrl + "/countries/" + this.$route.params.country_id)
                 .then(response => {
                   this.pageTitle = response.data.data.attributes.name;

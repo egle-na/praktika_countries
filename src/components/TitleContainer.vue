@@ -2,19 +2,17 @@
   <div class="title-container">
 
     <h1 class="title">
-      <slot />
+      <slot name="title" />
     </h1>  <!--  Title -->
-    <add-item-btn/>  <!--  Add Item Button -->
+
+    <slot name="btn" /> <!--  Add New Item Button -->
 
   </div>
 </template>
 <script>
-  import AddItemBtn from "@/components/AddItemBtn"
 
   export default {
     name: 'TitleContainer',
-    components: {AddItemBtn},
-
   }
 </script>
 <style scoped>

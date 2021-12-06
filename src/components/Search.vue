@@ -150,9 +150,9 @@
     border-radius: 3px;
 
     position: absolute;
-    margin-top: -.5em;
+    margin-top: -.7em;
     margin-left: 1rem;
-    padding: 0 .4em;
+    padding: .3em .4em;
     background: var(--clr-light);
   }
 

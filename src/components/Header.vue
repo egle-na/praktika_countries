@@ -4,14 +4,14 @@
 
     <img src="../assets/teltonika_logo.png" alt=""> <!-- Teltonika logo -->
 
-    <router-link :to="{ name: 'countries'}" exact class="tab">Šalys</router-link>
-    <router-link to="/countries/cities" class="tab">Miestai</router-link>
+    <router-link :to="{ name: 'countries'}" exact class="tab" title="Šalys">Šalys</router-link>
+    <router-link to="/countries/cities" class="tab" title="Miestai">Miestai</router-link>
     <router-link v-show="$route.params.country_id"
                  to="/"
+                 title="Šalis"
                  class="tab router-link-active">
         <slot>Šalis</slot>
     </router-link>
-      <!--       :to="{ name: 'country' }" exact-->
 
     </div>
   </header>
@@ -75,7 +75,6 @@
 
   @media (min-width: 750px) { /* web */
     header {
-      background: pink;
       margin-bottom: 2em;
     }
     img {

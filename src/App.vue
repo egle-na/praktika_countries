@@ -35,7 +35,6 @@
                  @reloadTable="getData"
                  @sendData="displayMessage"
       />
-<!--                 @actionComplete="showMessage"-->
 
     <message-card v-if="message" :message="message" />
 
@@ -98,16 +97,17 @@
     },
 
     created() {
-      this.getData(); // fetch data when page loads
-      this.getPageTitle();
-      EventBus.$on("sendMessage", msg => {
-        console.log("elp");
-        this.message = msg;
+      if(this.$route.name !== 'not-found'){
+        this.getData(); // fetch data when page loads
+        this.getPageTitle();
+        EventBus.$on("sendMessage", msg => {
+          this.message = msg;
 
-        setTimeout( () => {
-          this.message = "";
-        }, 6500 )
-      });
+          setTimeout( () => {
+            this.message = "";
+          }, 6500 )
+        });
+      }
     },
 
     watch: {
@@ -115,7 +115,6 @@
         this.params = {...this.defaultParams};
         this.getData();
         this.getPageTitle();
-        // window.scrollTo({ top: 0, behavior: 'smooth' });
       },
     },
 
@@ -130,13 +129,15 @@
           })
           .catch(error => {
             console.error(error.response.data.message);
-            this.list = {};
-            this.list.error = error.response.data.message;
+            this.$router.push('not-found')
           })
       },
 
       setParams(name, value) {
         this.params[name] = value;
+        if(name !== 'page'){
+          this.params['page'] = 1;
+        }
         this.getData();
       },
 
@@ -164,7 +165,6 @@
         }
       },
       displayMessage(msg) {
-        console.log("elp");
         this.message = msg;
         setTimeout( () => {
           this.message = "";

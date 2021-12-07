@@ -2,9 +2,8 @@
   <div>
 
     <table>
-      <!-- Table Header -->
+      <!-- Table Headers -->
       <tr class="table-labels">
-<!--        <th>Pavadinimas</th>-->
         <th v-for="(label, index) in headers" :key="index" v-text="label.title" />
         <th>Veiksmai</th>
       </tr>
@@ -12,12 +11,12 @@
       <!-- Table Body -->
       <tr v-for="item in list" :key="item.id">
 
-        <!-- name column -->
+        <!-- column name -->
         <td v-if="linkNeeded">
           <router-link :to="`/countries/${item.id}/cities`" v-text="item.attributes.name" />
         </td>
 
-        <!-- custom columns -->
+        <!-- fill columns -->
         <td v-for="({attr}, index) in thisHeaders" :key="index">
           <span class="mobile-headers">
             {{ thisHeaders[index].title }}
@@ -28,8 +27,6 @@
           </span>
         </td>
 
-<!--        v-text="item.attributes[attr]"-->
-
         <!-- actions column -->
         <actions :id="item.id"
                  :type="item.type"
@@ -37,7 +34,6 @@
                  @editItem="editItem"
                  @reloadTable="$emit('reloadTable')"
         />
-
       </tr>
     </table>
 
@@ -82,7 +78,6 @@
     },
     methods: {
       editItem( data ) {
-        console.log("elp",data);
         this.itemToEdit = this.list.find(item => item.id === data.id);
         this.editIsOpen = true;
       }
@@ -96,7 +91,6 @@
     color: var(--clr-grey);
     border-spacing: 0;
     width: 100%;
-    /*margin: 1em;*/
     padding: 2em;
     font-size: .875rem;
     text-align: center;

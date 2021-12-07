@@ -26,17 +26,13 @@
       <button type="submit" class="submit-btn shadow-container">Saugoti</button>
     </div>
 
-
-<!--    <input type="hidden" name="id" value="">-->
-<!--    <input v-if="type === 'edit'" type="hidden" name="country_id" :value="newItem">-->
-
-
   </form>
 </template>
 
 <script>
   import {EventBus} from "@/main";
   import FormItem from "@/components/FormItem";
+
   export default {
     name: "FormComponent",
     components: { FormItem },
@@ -52,7 +48,6 @@
       },
       type: String,
     } ,
-        // 'names',
     data() {
       return {
         newItem: {},
@@ -62,7 +57,6 @@
         countriesList: [],
       }
     },
-
     created() {
       if(this.type === 'edit') { // if edit form
         this.newItem = { ...this.item.attributes }; // assign item to new  var
@@ -73,24 +67,16 @@
         }
       } else {
         this.itemType = this.$route.name;
-        console.log(this.itemType);
         if(this.itemType === 'cities'){
           this.getCountriesList();
         } else if(this.itemType === 'country') {
           this.countryId = this.$route.params.country_id;
-          console.log(this.countryId)
         }
       }
-
-
-
-      // console.log( this.itemType, this.countryId);
     },
-
     methods: {
       storeValue( attr, value) { // save input to item var
         this.newItem[attr] = value;
-        // console.log(value)
       },
 
       sendData() {
@@ -111,8 +97,6 @@
               console.error(error);
               console.log(JSON.stringify(error));
             })
-
-          console.log(url, itemData, 'put'); //
         } else { // new item
           if (this.itemType === "countries"){
             url = baseUrl + "/countries";
@@ -126,28 +110,15 @@
               console.error(error);
               console.log(JSON.stringify(error));
             })
-
-          // console.log(url, itemData, 'post');
         }
       },
 
       catchResponse(response) {
-        console.log(response); //
-
-        // reload table
         this.$emit('reloadTable');
-
-        // close card
-
-        // display message
-        console.log(response.data.message); //
-
-        // message actions successful
         EventBus.$emit('sendMessage', response.data.message)
       },
 
       getCountriesList() { // get list of countries
-        console.log('elp')
         const url = "https://akademija.teltonika.lt/countries_api/api/countries?per_page=40";
         this.$http.get(url)
           .then(response => {
@@ -155,8 +126,6 @@
             this.countriesList = tempData.map(country => {
               return {id :country.id, name: country.attributes["name"]}
             })
-            // console.log(tempData, this.countriesList)
-
           }).catch(err => console.error(err))
       }
     },
@@ -169,8 +138,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /*max-height: 100%;*/
-    /*height: 380px;*/
     max-height: 100%;
   }
 
@@ -223,7 +190,6 @@
   .select-country {
     background: transparent;
     width: 55%;
-
     margin: 0 2em 0 0;
   }
 

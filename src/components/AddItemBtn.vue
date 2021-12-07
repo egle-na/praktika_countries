@@ -1,7 +1,11 @@
 <template>
   <div>
 
-    <button id="add-item-btn" class="shadow-container" @click="$emit('openItemCard')" >&plus;</button>
+    <button id="add-item-btn"
+            class="shadow-container"
+            @click="$emit('openItemCard')"
+            title="Pridėti naują"
+    >&plus;</button>
 
   </div>
 </template>
@@ -40,11 +44,7 @@
   }
 
   #add-item-btn:hover {
-    /*background: #e8f0fa;*/
-    /*color: var(--clr-light);*/
     transform: scale(1.1);
-    /*box-shadow: 0 0 10px #333;*/
   }
-
 
 </style>

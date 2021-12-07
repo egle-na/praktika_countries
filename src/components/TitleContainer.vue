@@ -9,12 +9,14 @@
 
   </div>
 </template>
+
 <script>
 
   export default {
     name: 'TitleContainer',
   }
 </script>
+
 <style scoped>
   .title-container {
     display: flex;

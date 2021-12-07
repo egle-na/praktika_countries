@@ -3,6 +3,8 @@
 
     <button class="page-number"
             @click="prevPage"
+            title="Ankstesnis Puslapis"
+
     >&lt;</button>
     <button v-for="index in meta.last_page"
             :key="index"
@@ -13,10 +15,12 @@
     ></button>
     <button class="page-number"
             @click="nextPage"
+            title="Sekantis Puslapis"
     >&gt;</button>
 
   </div>
 </template>
+
 <script>
   export default {
     name: 'PageNumbers',
@@ -41,6 +45,7 @@
     }
   }
 </script>
+
 <style scoped>
 
   .page-numbers {
@@ -49,7 +54,8 @@
   }
 
   .page-number {
-    margin: 2px;
+    margin: .5em;
+    padding: .4em;
   }
 
   .page-number:hover {
@@ -68,6 +74,13 @@
 
   .current-page:focus{
     outline: solid var(--clr-accent);
+  }
+
+  @media (min-width: 750px) { /* web */
+    .page-number {
+      margin: 2px;
+      padding: .1em .3em;
+    }
   }
 
 </style>

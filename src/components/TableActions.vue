@@ -49,19 +49,16 @@
     props: ["type", "id", 'item'],
     data() {
       return {
-        // editOpen: false,
         confirmDelete: false,
       }
     },
     methods: {
       openConfirm() {
         this.confirmDelete = true;
-        // this.$nextTick(() => this.$refs.confirmDel.focus());
       },
 
       deleteItem(type, id) {
         this.confirmDelete = false;
-        console.log("delete", type, id); //
         let url;
 
         if(this.$route.path === "/countries/cities") {
@@ -82,7 +79,6 @@
 
       editItem(type, id) {
         this.$emit("editItem", type, id);
-        console.log("edit", {type, id} );
       }
     }
   }
@@ -136,7 +132,6 @@
     padding: 1.5rem 1.5rem 1rem;
     min-width: max-content;
     z-index: 1;
-    /*width: max-content;*/
   }
 
   .confirm-close-btn {

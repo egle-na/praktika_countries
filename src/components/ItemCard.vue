@@ -7,33 +7,23 @@
       <div class="item-card--content">
         <h2 class="card-title">{{ cardTitle }}</h2>
 
-<!--        <form-component v-if="type === 'edit'" :names="inputs" :item="item" >-->
-
         <form-component :names="inputs"
                         :item="item"
                         :type="type"
                         @reloadTable="dataSubmitted"
-        >
-<!--                        v-if="type === 'edit'"-->
-        </form-component >
-
-<!--        <form-component v-else :names="inputs" />-->
-
+        />
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
-  // import FormItem from "@/components/FormItem";
   import FormComponent from "@/components/FormComponent";
 
   export default {
     name: 'ItemCard',
     props: [ "type", "item", 'inputs'],
     components: {
-      // FormItem,
       FormComponent,
     },
     computed: {
@@ -59,7 +49,6 @@
         dataSubmitted() {
           this.$emit('reloadTable');
           this.$emit('close');
-
         }
     }
   }
@@ -90,7 +79,6 @@
   }
 
   .item-card {
-    /*position: relative;*/
     background: var(--clr-light);
     max-width: 95%;
     width: 500px;
@@ -120,14 +108,11 @@
     color: var(--clr-grey);
     font-family: var(--ff-oswald);
     font-size: 1.7rem;
-    /*line-height: 1.6;*/
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-top: .5em ;
     margin-bottom: .5em ;
   }
-
-
 
 </style>

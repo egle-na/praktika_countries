@@ -8,11 +8,11 @@
            v-model="newValue"
            required
            :pattern="patternValid(attr)"
+           :step="patternValid(attr)"
            @focus="isFocused = true"
            @input="$emit('inputValue', attr, newValue )"
-           @blur="isFocused = false"> <!-- when false, value disappears after losing focus -->
+           @blur="isFocused = false">
   </div>
-<!--           pattern="[,\s\p{L}]+"-->
 </template>
 
 <script>
@@ -30,8 +30,10 @@
     },
     methods: {
       patternValid(attr) {
-        if( attr === "name") {
+        if( attr === 'name') {
           return `[,\\s\\p{L}]+`
+        } else if(attr === 'area'){
+          return '.1'
         }
       }
     }
@@ -61,7 +63,6 @@
     border: 1px solid #c4c4c4;
     border-radius: 5px;
     padding: .9em;
-    /*margin-bottom: 1.3em;*/
     width: 100%;
   }
 

@@ -43,6 +43,10 @@ const router = new VueRouter({
             ]
         },
         {
+            path: '/countries/:country_id',
+            redirect: '/countries/:country_id/cities'
+        },
+        {
             path: '/:catchAll(.*)*',
             name: 'not-found',
             component: PageNotFound,

@@ -3,7 +3,7 @@
 
     <!-- Search Input -->
     <div class="search-container shadow-container">
-      <input type="text" id="search" v-model="search" @keyup="sendSearch" @blur="sendSearch">
+      <input type="text" id="search" v-model="search" @keyup="sendSearch" @blur="sendSearch" title="Ieškoti">
       <button id="search-btn" @click="clearSearch" :tabindex="searchBtnFocus">
         <img v-show="!search" src="../assets/icons/search.svg" alt="search button">
         <span v-show="search">&times;</span>
@@ -30,7 +30,6 @@
       </div>
     </div>
 
-
   </div>
 </template>
 
@@ -55,7 +54,6 @@
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
           this.$emit('sendParams', 'search' , event.target.value);
-          // console.log(event.target.value);
         }, 400)
       },
       setStartDate(event) {
@@ -93,10 +91,6 @@
   }
 
   .search-filter-container div {
-    /*margin-bottom: 1rem;*/
-  }
-
-  .search-filter-container div {
      margin-right: 1rem;
    }
 
@@ -107,10 +101,8 @@
   .search-container {
     position: relative;
     display: flex;
-    /*padding: 0 .6em 0 0;*/
     width: 100%;
     max-width: 100%;
-    /*margin-right: 1rem;*/
     margin-bottom: 1rem;
   }
 
@@ -159,9 +151,7 @@
     color: var(--clr-grey);
     border: none;
     padding: .9em 1em;
-    /*width: available;*/
     max-width: 100%;
-    /*min-width: fit-content;*/
     height: 100%;
 
     font: inherit;

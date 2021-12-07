@@ -9,7 +9,6 @@
 <script>
   export default {
     name: "MainContent",
-    // props: [ 'params' ]
   }
 </script>
 

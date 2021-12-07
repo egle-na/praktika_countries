@@ -7,6 +7,8 @@ Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false
 
+export const EventBus = new Vue();
+
 new Vue({
   router,
   render: h => h(App),

@@ -4,29 +4,32 @@
     <!-- Search Input -->
     <div class="search-container shadow-container">
       <input type="text" id="search" v-model="search" @keyup="sendSearch" @blur="sendSearch">
-      <button id="search-btn" @click="clearSearch" @focus="selectAction">
+      <button id="search-btn" @click="clearSearch" :tabindex="searchBtnFocus">
         <img v-show="!search" src="../assets/icons/search.svg" alt="search button">
         <span v-show="search">&times;</span>
       </button>
     </div>
 
-    <!-- Start Date Filter -->
-    <div>
-      <label class="date-label" :class="{'has-value' : minEndDate}">Nuo:</label>
-      <input type="date"
-             class="date-filter shadow-container"
-             @input="setStartDate"
-             :max="maxStartDate">
+    <div class="filter-container">
+      <!-- Start Date Filter -->
+      <div>
+        <label class="date-label" :class="{'has-value' : minEndDate}">Nuo:</label>
+        <input type="date"
+               class="date-filter shadow-container"
+               @input="setStartDate"
+               :max="maxStartDate">
+      </div>
+
+      <!-- End Date Filter -->
+      <div>
+        <label class="date-label" :class="{'has-value' : maxStartDate}">Iki:</label>
+        <input type="date"
+               class="date-filter shadow-container"
+               @input="setEndDate"
+               :min="minEndDate">
+      </div>
     </div>
 
-    <!-- End Date Filter -->
-    <div>
-      <label class="date-label" :class="{'has-value' : maxStartDate}">Iki:</label>
-      <input type="date"
-             class="date-filter shadow-container"
-             @input="setEndDate"
-             :min="minEndDate">
-    </div>
 
   </div>
 </template>
@@ -65,14 +68,17 @@
         this.maxStartDate = val;
         this.$emit('sendParams', 'end_date', val)
       },
-      selectAction(event) {
-        if(this.search === '') {
-          event.target.parentNode.childNodes[0].focus();
-        }
-      },
       clearSearch(event) {
         this.search = '';
         event.target.parentNode.childNodes[0].focus();
+      }
+    },
+    computed: {
+      searchBtnFocus() {
+        if (this.search) {
+          return 0;
+        }
+        return -1;
       }
     },
   }
@@ -82,12 +88,17 @@
 
   .search-filter-container {
     display: flex;
+    flex-direction: column;
     margin-bottom: 1rem;
   }
 
   .search-filter-container div {
-    margin-right: 1rem;
+    /*margin-bottom: 1rem;*/
   }
+
+  .search-filter-container div {
+     margin-right: 1rem;
+   }
 
   .search-filter-container div:last-child {
     margin-right: 0;
@@ -99,7 +110,8 @@
     /*padding: 0 .6em 0 0;*/
     width: 100%;
     max-width: 100%;
-    margin-right: 1rem;
+    /*margin-right: 1rem;*/
+    margin-bottom: 1rem;
   }
 
   #search {
@@ -136,12 +148,20 @@
     transform: scale(1.2);
   }
 
+  .filter-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+  }
+
   .date-filter {
     background: none;
     color: var(--clr-grey);
     border: none;
-    padding: 0 1em;
-    min-width: fit-content;
+    padding: .9em 1em;
+    /*width: available;*/
+    max-width: 100%;
+    /*min-width: fit-content;*/
     height: 100%;
 
     font: inherit;
@@ -168,6 +188,16 @@
 
   .has-value {
     color: var(--clr-accent)
+  }
+
+  @media (min-width: 550px) { /* web */
+    .search-filter-container {
+      flex-direction: row;
+    }
+
+    .search-container {
+      margin-bottom: 0;
+    }
   }
 
 </style>

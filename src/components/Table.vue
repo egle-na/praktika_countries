@@ -18,7 +18,17 @@
         </td>
 
         <!-- custom columns -->
-        <td v-for="({attr}, index) in thisHeaders" :key="index" v-text="item.attributes[attr]" />
+        <td v-for="({attr}, index) in thisHeaders" :key="index">
+          <span class="mobile-headers">
+            {{ thisHeaders[index].title }}
+          </span>
+          <span>
+            {{ item.attributes[attr] }}
+
+          </span>
+        </td>
+
+<!--        v-text="item.attributes[attr]"-->
 
         <!-- actions column -->
         <actions :id="item.id"
@@ -84,47 +94,132 @@
 
   table {
     color: var(--clr-grey);
-    text-align: left;
     border-spacing: 0;
     width: 100%;
     /*margin: 1em;*/
     padding: 2em;
     font-size: .875rem;
+    text-align: center;
   }
 
-  /*tr {*/
-  /*  display: flex;*/
-  /*  width: 100%;*/
-  /*  flex-direction: column;*/
-  /*}*/
-
-  th, td {
-    border-right: solid 2px #c4c4c4;
-    border-bottom: solid 2px #c4c4c4;
-    padding: 1em;
-    /*white-space: nowrap;*/
-  }
-
-  th:first-child, td:first-child {
-    padding-left: 0;
-  }
-
-  th:last-child, td:last-child {
-    border-right:none;
-  }
-
-  tr:last-child td {
-    border-bottom: none;
+  tr {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
   }
 
   th {
-    font-family: var(--ff-oswald);
+    display: none;
+    text-align: left;
     font-weight: 400;
+  }
+
+  th, td {
+    border-bottom: solid 2px #c4c4c4;
+    padding: 1em;
+  }
+
+  th,
+  td:first-child{
+    font-family: var(--ff-oswald);
     font-size: 1.125rem;
     letter-spacing: 1px;
     text-transform: uppercase;
-    padding: 1rem;
   }
 
+  td:not(:last-child):not(:first-child){
+    display: flex;
+    justify-content: center;
+  }
+
+  td:not(:last-child):not(:first-child) span:not(.mobile-headers) {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  td a{
+    border-bottom: solid;
+  }
+
+  .mobile-headers {
+    white-space: nowrap;
+    color: var(--clr-lightgrey);
+    align-self: start;
+  }
+
+  .mobile-headers:after {
+    content: ':\00a0';
+    margin-left: -3px;
+  }
+
+  td:first-child .mobile-headers {
+    display:none;
+  }
+
+  @media (min-width: 750px) { /* web */
+    table {
+      text-align: left;
+    }
+
+    tr {
+      display: table-row;
+    }
+
+    th, td {
+      border-left: none;
+      border-top: none;
+      border-right: solid 2px #c4c4c4;
+      border-bottom: solid 2px #c4c4c4;
+      padding: 1em;
+    }
+
+    th:first-child, td:first-child {
+      padding-left: 0;
+    }
+
+    td:not(:last-child):not(:first-child){
+      display: table-cell;
+      justify-content: start;
+    }
+
+    td a {
+      font-weight: var(--fw-bold);
+      border-bottom: none;
+    }
+
+    th:last-child, td:last-child {
+      border-right:none;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    th, td {
+      display: table-cell;
+    }
+
+    td:first-child {
+      font-family: var(--ff-opensans);
+      font-size: inherit;
+      letter-spacing: initial;
+      text-transform: initial;
+    }
+
+    .mobile-headers {
+      display: none;
+    }
+  }
+
+  @media (min-width: 550px) {
+    td:not(:last-child):not(:first-child) span:not(.mobile-headers) {
+      width: fit-content;
+    }
+
+    .mobile-headers {
+      white-space: nowrap;
+      color: var(--clr-lightgrey);
+    }
+  }
 
 </style>

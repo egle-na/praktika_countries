@@ -42,6 +42,8 @@
 
 <script>
 
+  import {EventBus} from "@/main";
+
   export default {
     name: "TableActions",
     props: ["type", "id", 'item'],
@@ -72,6 +74,7 @@
         this.$http.delete(url)
           .then(response => {
             console.log(response.message);
+            EventBus.$emit('sendMessage', response.data.message) // EVENT BUS
             this.$emit('reloadTable')
           })
           .catch(error => console.error(error))
@@ -87,15 +90,11 @@
 
 <style scoped>
   .line {
-    /*width: 3px;*/
     height: 2em;
     border-right: solid 2px #c4c4c4;
-    /*background: #5C5C5C;*/
-    /*margin: 0 1em;*/
   }
 
   button {
-    /*background: #5C5C5C;*/
     margin: 0;
   }
 
@@ -122,20 +121,17 @@
     height: fit-content;
   }
 
-
   .backdrop-close-confirm {
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    /*background: rgba(230, 230, 250);*/
   }
 
   .confirm {
     text-align: right;
     position: absolute;
-    right: 0;
     background: var(--clr-light);
     padding: 1.5rem 1.5rem 1rem;
     min-width: max-content;
@@ -145,12 +141,13 @@
 
   .confirm-close-btn {
     position: absolute;
-    right: .7rem;
+    left: .7rem;
     top: .7rem;
     font-size: 1rem;
   }
 
-  .confirm-close-btn:hover {
+  .confirm-close-btn:hover,
+  .confirm-close-btn:active {
     transform: scale(1.3);
     color: var(--clr-accent)
   }
@@ -169,6 +166,18 @@
   .confirm-btn:hover {
     background: var(--clr-accent);
     color: var(--clr-light);
+  }
+
+  @media (min-width: 750px) { /* web */
+
+    .confirm {
+      right: 0;
+    }
+
+    .confirm-close-btn {
+      left: unset;
+      right: .7rem;
+    }
   }
 
 </style>

@@ -40,10 +40,6 @@ const router = new VueRouter({
                         table: CitiesTable
                     },
                 },
-                // {
-                //     path: 'countries/*',
-                //     component: PageNotFound,
-                // }         // ---- ši šalis dar neturi pridėtų miestų
             ]
         },
         {
@@ -51,7 +47,10 @@ const router = new VueRouter({
             name: 'not-found',
             component: PageNotFound,
         }
-    ]
+    ],
+    scrollBehavior() {
+        return {x: 0, y: 0, behavior: 'smooth'}
+    }
 })
 
 export default router;

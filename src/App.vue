@@ -19,7 +19,7 @@
       <search :query="params.search" @sendParams="setParams" />
 
       <!-- Display data table -->
-      <router-view name="table" class="shadow-container" :list="list" :listParams="listParams" @reloadTable="getData"/>
+      <router-view name="table" class="table-container shadow-container" :list="list" :listParams="listParams" @reloadTable="getData"/>
 
       <!-- Display page numbers -->
       <page-numbers :meta="meta" @setParams="setParams"/>
@@ -33,15 +33,18 @@
                  :inputs="listParams"
                  @close="itemCardIsOpen = false"
                  @reloadTable="getData"
+                 @sendData="displayMessage"
       />
 <!--                 @actionComplete="showMessage"-->
 
-    <message-card />
+    <message-card v-if="message" :message="message" />
 
   </div>
 </template>
 
 <script>
+  import {EventBus} from "@/main";
+
   import Header from "@/components/Header";
   import AddItemBtn from "@/components/AddItemBtn";
   import TitleContainer from "@/components/TitleContainer";
@@ -90,12 +93,21 @@
           ]
         },
         itemCardIsOpen: false,
+        message: '',
       }
     },
 
     created() {
       this.getData(); // fetch data when page loads
       this.getPageTitle();
+      EventBus.$on("sendMessage", msg => {
+        console.log("elp");
+        this.message = msg;
+
+        setTimeout( () => {
+          this.message = "";
+        }, 6500 )
+      });
     },
 
     watch: {
@@ -103,6 +115,7 @@
         this.params = {...this.defaultParams};
         this.getData();
         this.getPageTitle();
+        // window.scrollTo({ top: 0, behavior: 'smooth' });
       },
     },
 
@@ -127,7 +140,7 @@
         this.getData();
       },
 
-      getPageTitle(){
+      getPageTitle() {
         const route = this.$route.name;
 
         switch (route) { // --------- declare page title
@@ -150,6 +163,13 @@
             break;
         }
       },
+      displayMessage(msg) {
+        console.log("elp");
+        this.message = msg;
+        setTimeout( () => {
+          this.message = "";
+        }, 8000 )
+      }
     },
   }
 </script>
@@ -160,12 +180,14 @@
     --clr-light: #ffffff;
     --clr-accent: #0054A6;
     --clr-grey: rgba(92, 92, 92, 0.98);
+    --clr-lightgrey: #c4c4c4;
 
     --ff-opensans:'Open Sans', sans-serif;
     --ff-oswald: 'Oswald', sans-serif;
     --fs-title: 4rem;
     --fw-bold: 600;
     --box-shadow: 0 0 10px #222222aa;
+    --mobile-breakpoint: 750px;
   }
 
  * { box-sizing: border-box; }
@@ -176,11 +198,12 @@
  }
 
  .container {
-   width: 90%;
+   width: 96%;
    max-width: 1200px;
    margin: 0 auto 2em;
    padding: 1em;
  }
+
 
  .shadow-container {
    box-shadow: 0 0 8px #22222233;
@@ -214,4 +237,16 @@
     outline: solid 2px;
   }
 
+  @media (min-width: 750px) { /* web */
+    .container {
+      width: 90%;
+    }
+    .table-container {
+      min-width: 630px;
+    }
+  }
+
+</style>
+
+<style scoped>
 </style>

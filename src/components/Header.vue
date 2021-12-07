@@ -29,12 +29,9 @@
     top: 0;
     z-index: 1;
     background: var(--clr-accent);
-    margin-bottom: 2em;
   }
 
   header .container {
-    /*display: inline-block;*/
-    /*width: fit-content;*/
     padding: 0;
     margin-bottom: 0;
   }
@@ -42,7 +39,7 @@
   img {
     max-width: 100%;
     height: 30px;
-    margin: 1em 2em 1em 0;
+    margin: 1em 2em 2.3em 0;
   }
 
   .tab {
@@ -74,6 +71,16 @@
     width: 100%;
     height: 15px;
     background: var(--clr-light);
+  }
+
+  @media (min-width: 750px) { /* web */
+    header {
+      background: pink;
+      margin-bottom: 2em;
+    }
+    img {
+      margin-bottom: 1em;
+    }
   }
 
 </style>

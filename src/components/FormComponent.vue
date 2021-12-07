@@ -12,15 +12,30 @@
       />
     </slot>
 
+    <div class="submit-btn-container">
+      <select v-if="type === 'add' && itemType === 'cities'"
+              v-model="countryId"
+              class="select-country"
+              required>
+        <option selected disabled value="">Pasirinkti šalį</option>
+        <option v-for="country in countriesList"
+                :key="country.id"
+                :value="country.id">{{ country.name }}</option>
+      </select>
+
+      <button type="submit" class="submit-btn shadow-container">Saugoti</button>
+    </div>
+
+
 <!--    <input type="hidden" name="id" value="">-->
 <!--    <input v-if="type === 'edit'" type="hidden" name="country_id" :value="newItem">-->
 
-    <button type="submit" class="submit-btn shadow-container">Saugoti</button>
 
   </form>
 </template>
 
 <script>
+  import {EventBus} from "@/main";
   import FormItem from "@/components/FormItem";
   export default {
     name: "FormComponent",
@@ -44,11 +59,11 @@
         itemId: "",
         itemType: '',
         countryId: '',
+        countriesList: [],
       }
     },
 
     created() {
-
       if(this.type === 'edit') { // if edit form
         this.newItem = { ...this.item.attributes }; // assign item to new  var
         this.itemId = this.item.id; // store item id
@@ -58,17 +73,24 @@
         }
       } else {
         this.itemType = this.$route.name;
-        // if (this.itemType === "cities") {
-        // //get country id
-        // }
+        console.log(this.itemType);
+        if(this.itemType === 'cities'){
+          this.getCountriesList();
+        } else if(this.itemType === 'country') {
+          this.countryId = this.$route.params.country_id;
+          console.log(this.countryId)
+        }
       }
-      console.log( this.itemType, this.countryId);
+
+
+
+      // console.log( this.itemType, this.countryId);
     },
 
     methods: {
       storeValue( attr, value) { // save input to item var
         this.newItem[attr] = value;
-        console.log(value)
+        // console.log(value)
       },
 
       sendData() {
@@ -95,18 +117,17 @@
           if (this.itemType === "countries"){
             url = baseUrl + "/countries";
           } else {
-            url = baseUrl + this.$route.path; // ????
-            // url = baseUrl + "/countries/" + this.countryId + "/cities";
+            url = baseUrl + "/countries/" + this.countryId + "/cities";
           }
 
-          this.$http.post(url, itemData) // axios edit request
+          this.$http.post(url, itemData) // axios add request
             .then(response => this.catchResponse(response))
             .catch(error => {
               console.error(error);
               console.log(JSON.stringify(error));
             })
 
-          console.log(url, itemData, 'post');
+          // console.log(url, itemData, 'post');
         }
       },
 
@@ -122,8 +143,23 @@
         console.log(response.data.message); //
 
         // message actions successful
+        EventBus.$emit('sendMessage', response.data.message)
+      },
+
+      getCountriesList() { // get list of countries
+        console.log('elp')
+        const url = "https://akademija.teltonika.lt/countries_api/api/countries?per_page=40";
+        this.$http.get(url)
+          .then(response => {
+            let tempData = response.data.data;
+            this.countriesList = tempData.map(country => {
+              return {id :country.id, name: country.attributes["name"]}
+            })
+            // console.log(tempData, this.countriesList)
+
+          }).catch(err => console.error(err))
       }
-    }
+    },
   }
 </script>
 
@@ -153,11 +189,17 @@
     z-index: 1;
   }
 
-  form input {
+  form input,
+  select {
     border: 1px solid #c4c4c4;
     border-radius: 5px;
     padding: .9em;
     margin-bottom: 1.3em;
+  }
+
+  .submit-btn-container {
+    margin-top: 1em;
+    display: flex;
   }
 
   .submit-btn {
@@ -168,9 +210,21 @@
     letter-spacing: 1px;
 
     padding: .6em 1em;
-    margin-top: 1em;
     width: fit-content;
-    align-self: end;
+    margin-left: auto;
+  }
+
+  .submit-btn:hover,
+  .submit-btn:focus {
+    background: var(--clr-accent);
+    color: var(--clr-light);
+  }
+
+  .select-country {
+    background: transparent;
+    width: 55%;
+
+    margin: 0 2em 0 0;
   }
 
 </style>

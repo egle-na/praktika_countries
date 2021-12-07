@@ -92,6 +92,7 @@
   .item-card {
     /*position: relative;*/
     background: var(--clr-light);
+    max-width: 95%;
     width: 500px;
     height: 500px;
 
@@ -126,5 +127,7 @@
     margin-top: .5em ;
     margin-bottom: .5em ;
   }
+
+
 
 </style>

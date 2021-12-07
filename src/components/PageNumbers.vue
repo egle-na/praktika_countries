@@ -9,7 +9,7 @@
             v-text="index"
             class="page-number"
             :class="{'current-page': meta.current_page === index}"
-            @click="$emit('setParams', 'page', index)"
+            @click="goToPage(index)"
     ></button>
     <button class="page-number"
             @click="nextPage"
@@ -24,14 +24,18 @@
       meta: {}
     },
     methods: {
+      goToPage(page) {
+        this.$emit('setParams', 'page', page);
+        window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+      },
       prevPage() {
         if( this.meta.current_page !== 1){
-        this.$emit('setParams', 'page', this.meta.current_page - 1)
+          this.goToPage( this.meta.current_page - 1);
         }
       },
       nextPage() {
         if( this.meta.current_page !== this.meta.last_page){
-          this.$emit('setParams', 'page', this.meta.current_page + 1)
+          this.goToPage(  this.meta.current_page + 1);
         }
       },
     }

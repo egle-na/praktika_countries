@@ -3,13 +3,16 @@
 
     <label :for="attr" :class="{'selected': isFocused}">{{ label }} </label>
     <input :name="attr"
+           :id="attr"
            :type="type"
            v-model="newValue"
            required
+           :pattern="patternValid(attr)"
            @focus="isFocused = true"
            @input="$emit('inputValue', attr, newValue )"
            @blur="isFocused = false"> <!-- when false, value disappears after losing focus -->
   </div>
+<!--           pattern="[,\s\p{L}]+"-->
 </template>
 
 <script>
@@ -24,6 +27,13 @@
     },
     created() {
       this.newValue = this.value;
+    },
+    methods: {
+      patternValid(attr) {
+        if( attr === "name") {
+          return `[,\\s\\p{L}]+`
+        }
+      }
     }
   }
 </script>

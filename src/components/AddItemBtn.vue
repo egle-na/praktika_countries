@@ -16,13 +16,13 @@
     props: [ 'type' ],
     data() {
       return {
-        isOpen: false
+        isOpen: false,
       }
     },
     methods: {
       buttonClicked() {
-        let eventName = this.type + 'Item'
-        this.$emit(eventName)
+        let eventName = this.type + 'Item';
+        this.$emit(eventName);
       }
     }
   }

@@ -3,7 +3,6 @@
     <p>
       {{ disMessage }}
     </p>
-
   </div>
 </template>
 

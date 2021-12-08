@@ -1,10 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import CountriesTable from "@/components/CountriesTable";
-import CitiesTable from "@/components/CitiesTable";
 import PageNotFound from "@/components/PageNotFound";
-import MainContent from "@/components/MainContent";
+import Countries from "@/views/Countries";
+import Cities from "@/views/Cities";
 
 Vue.use(VueRouter);
 
@@ -19,26 +18,16 @@ const router = new VueRouter({
         {
             path: '/countries',
             name: 'countries',
-            components:{
-                default: MainContent,
-                table: CountriesTable,
-            },
+            component: Countries,
         },
         {
-            path: '/countries/cities',
+            path: '/cities',
             name: 'cities',
-            components: {
-                default: MainContent,
-                table: CitiesTable
-            },
+            component: Cities,
             children: [
                 {
                     path: '/countries/:country_id/cities',
                     name: 'country',
-                    components: {
-                        default: MainContent,
-                        table: CitiesTable
-                    },
                 },
             ]
         },

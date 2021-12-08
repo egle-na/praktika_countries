@@ -1,13 +1,17 @@
 <template>
   <div class="item-card--container">
+    <!-- close Item card when clicked outside -->
     <div class="backdrop" @click="$emit('close')" />
 
     <div class="item-card shadow-container">
       <button id="close-btn" @click="$emit('close')">&times;</button>
       <div class="item-card--content">
-        <h2 class="card-title">{{ cardTitle }}</h2>
 
-        <slot />
+        <h2 class="card-title">
+          <slot name="title"></slot> <!-- Card title -->
+        </h2>
+
+        <slot /> <!-- Card body -->
 
       </div>
     </div>
@@ -15,47 +19,9 @@
 </template>
 
 <script>
-  // import FormComponent from "@/components/FormComponent";
-
   export default {
     name: 'ItemCard',
-    props: [ "type"/*, "item", 'inputs'*/],
-    components: {
-      // FormComponent,
-    },
-    computed: {
-      cardTitle() {
-        let title = "";
-
-        if (this.type === "edit") {
-          title = "Koreguoti ";
-        } else if (this.type === "add") {
-          title = "Pridėti ";
-        } else if (this.type === "upload") {
-          title = "Įkelti ";
-          if (this.$route.name === "cities" || this.$route.name === "country") {
-            title += "Miestus";
-          } else if (this.$route.name === "countries"){
-            title += "Šalis";
-          }
-          return title;
-        }
-
-        if (this.$route.name === "cities" || this.$route.name === "country") {
-          title += "Miestą";
-        } else if (this.$route.name === "countries"){
-          title += "Šalį";
-        }
-
-        return title;
-      },
-    },
-    // methods: {
-    //     dataSubmitted() {
-    //       this.$emit('reloadTable');
-    //       this.$emit('close');
-    //     }
-    // }
+    props: [ "type" ],
   }
 </script>
 <style scoped>

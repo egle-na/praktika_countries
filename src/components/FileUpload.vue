@@ -19,13 +19,13 @@
     },
     methods: {
       uploadFile() {
-
         const formData = new FormData();
-        if (this.$route.name === "countries"){
-          formData.append(this.$route.name, this.file)
 
-        } else if (this.$route.name === "country"){
-          formData.append("cities", this.file)
+        if (this.$route.name === "country"){
+          formData.append("cities", this.file);
+
+        } else if (this.$route.name === "countries"){
+          formData.append(this.$route.name, this.file)
         }
 
         const url = this.baseUrl + this.$route.path + '/upload';
@@ -37,23 +37,20 @@
               }
             }
         ).then(response => {
-          EventBus.$emit('sendMessage', response.data.message); // EVENT BUS
+          EventBus.$emit('sendMessage', response.data.message);
           EventBus.$emit('reloadTable');
           this.$emit('close');
-
           }).catch(error => console.error(error))
       },
 
       handleFileUpload(event){
         this.file = event.target.files[0];
-      }
-
+      },
     }
   }
 </script>
 <style scoped>
   .file-input {
-    /*background: lightblue;*/
     padding: 1.5em 0 2.5em;
     width: 100%;
   }

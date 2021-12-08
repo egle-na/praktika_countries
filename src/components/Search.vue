@@ -5,9 +5,9 @@
     <div class="search-container shadow-container">
       <input type="text" id="search" v-model="search" @keyup="sendSearch" @blur="sendSearch" title="Ieškoti">
       <button id="search-btn" @click="clearSearch" :tabindex="searchBtnFocus">
-        <img v-show="!search" src="../assets/icons/search.svg" alt="search button">
         <span v-show="search">&times;</span>
       </button>
+      <img v-show="!search" src="../assets/icons/search.svg" alt="" class="search-icon">
     </div>
 
     <div class="filter-container">
@@ -76,16 +76,19 @@
           this.$emit('sendParams', 'search' , event.target.value);
         }, 400)
       },
+
       setStartDate(event) {
         const val = event.target.value;
         this.minEndDate = val;
         this.$emit('sendParams', 'start_date', val)
       },
+
       setEndDate(event) {
         const val = event.target.value;
         this.maxStartDate = val;
         this.$emit('sendParams', 'end_date', val)
       },
+
       sendPerPage(event) {
         let val = event.target.value;
         if(val === 0 || val === '0' || isNaN(val)) {
@@ -94,8 +97,10 @@
         }
         this.$emit('sendParams', 'per_page', val)
       },
+
       clearSearch(event) {
         this.search = '';
+        this.sendSearch(event);
         event.target.parentNode.childNodes[0].focus();
       },
     },
@@ -118,14 +123,6 @@
     margin-bottom: 1rem;
   }
 
-  .search-filter-container div {
-     margin-right: 1rem;
-   }
-
-  .search-filter-container div:last-child {
-    margin-right: 0;
-  }
-
   .search-container {
     position: relative;
     display: flex;
@@ -136,7 +133,7 @@
 
   #search,
   #per_page {
-    background: var(--clr-light);
+    background: transparent;
     color: var(--clr-grey);
     font: inherit;
     font-weight: 600;
@@ -169,10 +166,19 @@
     transform: scale(1.2);
   }
 
+  .search-icon {
+    position: absolute;
+    height: 100%;
+    padding: .8rem .6rem;
+    z-index: -1;
+    right: 0;
+  }
+
   .filter-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: nowrap;
+    /*margin-right: 0;*/
   }
 
   .date-filter {
@@ -206,10 +212,12 @@
   }
 
   #per_page {
+    display: none;
     padding: 1em;
     text-align: center;
     width: 50px;
     max-width: max-content;
+    margin: 1rem 0;
   }
 
   select#per_page {
@@ -234,8 +242,22 @@
   }
 
   @media (min-width: 550px) { /* web */
+
+    .search-filter-container div {
+      margin-right: 1rem;
+    }
+
+    .search-filter-container div:last-child {
+      margin-right: 0;
+    }
+
     .search-filter-container {
       flex-direction: row;
+    }
+
+    #per_page {
+      display: initial;
+      margin: 0;
     }
 
     .search-container {

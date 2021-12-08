@@ -2,6 +2,8 @@
   <td>
     <div class="actions-container">
       <div class="delete-container">
+
+        <!-- Delete Button -->
         <button @click="openConfirm"
                 title="Ištrinti"
                 class="delete-btn"
@@ -22,7 +24,7 @@
         <!-- confirm delete card -->
         <div class="confirm shadow-container"
              v-show="confirmDelete">
-
+          <!-- confirm delete button -->
           <button @click="confirmDelete = false" class="confirm-close-btn">&times;</button>
           <p>Ar tikrai norite ištrinti šį elementą?</p>
           <button @click="deleteItem(type, id)"
@@ -33,6 +35,7 @@
 
       <span class="line"></span>
 
+      <!-- Edit Button -->
       <button @click="$emit('editItem', {type, id})" title="Taisyti">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M19.3026 1.8986C18.1044 0.700466 16.1618 0.700466 14.9635 1.8986L2.79947 14.0616C2.71611 14.1449 2.65592 14.2483 2.62449 14.3617L1.02488 20.1361C0.959095 20.3729 1.02595 20.6264 1.1996 20.8003C1.37351 20.9739 1.62706 21.0408 1.86384 20.9753L7.63878 19.3755C7.75223 19.3441 7.85557 19.2839 7.93893 19.2006L20.1027 7.03734C21.2991 5.83841 21.2991 3.89753 20.1027 2.6986L19.3026 1.8986ZM4.28509 14.5047L14.2404 4.55L17.4511 7.76038L7.49549 17.7151L4.28509 14.5047ZM3.64375 15.7915L6.20882 18.3566L2.66071 19.3396L3.64375 15.7915ZM19.1386 6.0733L18.4155 6.79633L15.2046 3.58568L15.9279 2.86265C16.5935 2.19714 17.6727 2.19714 18.3382 2.86265L19.1386 3.66265C19.8031 4.32896 19.8031 5.40725 19.1386 6.0733Z" fill="#969696" stroke="white" stroke-width="0.5"/>
@@ -71,7 +74,7 @@
 
         this.$http.delete(url)
           .then(response => {
-            EventBus.$emit('sendMessage', response.data.message) // EVENT BUS
+            EventBus.$emit('sendMessage', response.data.message)
             EventBus.$emit('reloadTable')
           })
           .catch(error => console.error(error))

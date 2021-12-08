@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="table-container shadow-container">
 
     <table>
       <!-- Table Headers -->
@@ -23,16 +23,14 @@
           </span>
           <span>
             {{ item.attributes[attr] }}
-
           </span>
         </td>
 
-        <!-- actions column -->
+        <!-- Veiksmai column -->
         <actions :id="item.id"
                  :type="item.type"
                  :item="item"
-                 @editItem="editItem"
-        />
+                 @editItem="editItem" />
       </tr>
     </table>
 
@@ -54,7 +52,7 @@
 
   export default {
     name: "Table",
-    props:[ 'headers', 'list', 'type'],
+    props:[ 'headers', 'list'],
     components: {
       FormComponent,
       ItemCard,
@@ -200,7 +198,6 @@
     th, td {
       display: table-cell;
     }
-
 
     td:first-child {
       font-family: var(--ff-opensans);

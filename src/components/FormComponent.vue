@@ -47,6 +47,7 @@
         },
       },
       type: String,
+      baseUrl: String,
     } ,
     data() {
       return {
@@ -83,14 +84,12 @@
         const itemData = {data: { attributes: { ...this.newItem } } } // bury it deeper for backend
         const baseUrl = "https://akademija.teltonika.lt/countries_api/api";
         let url;
-
         if(this.type === 'edit') { // edit item
           if (this.itemType === "countries"){
             url = baseUrl + "/countries/" + this.itemId;
           } else {
             url = baseUrl + "/countries/" + this.countryId + "/cities/" + this.itemId;
           }
-
           this.$http.put(url, itemData) // axios edit request
             .then(response => this.catchResponse(response))
             .catch(error => {

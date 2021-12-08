@@ -7,24 +7,21 @@
       <div class="item-card--content">
         <h2 class="card-title">{{ cardTitle }}</h2>
 
-        <form-component :names="inputs"
-                        :item="item"
-                        :type="type"
-                        @reloadTable="dataSubmitted"
-        />
+        <slot />
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import FormComponent from "@/components/FormComponent";
+  // import FormComponent from "@/components/FormComponent";
 
   export default {
     name: 'ItemCard',
-    props: [ "type", "item", 'inputs'],
+    props: [ "type"/*, "item", 'inputs'*/],
     components: {
-      FormComponent,
+      // FormComponent,
     },
     computed: {
       cardTitle() {
@@ -34,6 +31,14 @@
           title = "Koreguoti ";
         } else if (this.type === "add") {
           title = "Pridėti ";
+        } else if (this.type === "upload") {
+          title = "Įkelti ";
+          if (this.$route.name === "cities" || this.$route.name === "country") {
+            title += "Miestus";
+          } else if (this.$route.name === "countries"){
+            title += "Šalis";
+          }
+          return title;
         }
 
         if (this.$route.name === "cities" || this.$route.name === "country") {
@@ -45,12 +50,12 @@
         return title;
       },
     },
-    methods: {
-        dataSubmitted() {
-          this.$emit('reloadTable');
-          this.$emit('close');
-        }
-    }
+    // methods: {
+    //     dataSubmitted() {
+    //       this.$emit('reloadTable');
+    //       this.$emit('close');
+    //     }
+    // }
   }
 </script>
 <style scoped>
@@ -82,7 +87,7 @@
     background: var(--clr-light);
     max-width: 95%;
     width: 500px;
-    height: 500px;
+    /*height: 500px;*/
 
     border-radius: 10px;
     padding: 1em;

@@ -4,14 +4,17 @@
 
     <img src="../assets/teltonika_logo.png" alt=""> <!-- Teltonika logo -->
 
-    <router-link :to="{ name: 'countries'}" exact class="tab" title="Šalys">Šalys</router-link>
-    <router-link to="/countries/cities" class="tab" title="Miestai">Miestai</router-link>
-    <router-link v-show="$route.params.country_id"
-                 to="/"
-                 title="Šalis"
-                 class="tab router-link-active">
+      <div v-if="false"> <!-- remove to see tabs -->
+        <router-link :to="{ name: 'countries'}" exact class="tab" title="Šalys">Šalys</router-link>
+      <router-link to="/countries/cities" class="tab" title="Miestai">Miestai</router-link>
+      <router-link v-show="$route.params.country_id"
+                   to="/"
+                   title="Šalis"
+                   class="tab router-link-active">
         <slot>Šalis</slot>
-    </router-link>
+      </router-link>
+    </div>
+
 
     </div>
   </header>
@@ -55,6 +58,7 @@
 
   .tab:focus {
     color: var(--clr-accent);
+    outline: none;
   }
 
   .router-link-active {

@@ -32,18 +32,17 @@
                  :type="item.type"
                  :item="item"
                  @editItem="editItem"
-                 @reloadTable="$emit('reloadTable')"
         />
       </tr>
     </table>
 
-    <ItemCard :type="'edit'"
-              :item="itemToEdit"
-              :inputs="headers"
-              v-if="editIsOpen"
-              @close="editIsOpen = false"
-              @reloadTable="$emit('reloadTable')"
+    <ItemCard :type="'edit'" v-if="editIsOpen" @close="editIsOpen = false">
+    <form-component :names="headers"
+                    :item="itemToEdit"
+                    :type="'edit'"
+                    @close="editIsOpen = false"
     />
+    </ItemCard>
 
   </div>
 </template>
@@ -51,11 +50,13 @@
 <script>
   import ItemCard from "@/components/ItemCard";
   import Actions from "@/components/TableActions";
+  import FormComponent from "@/components/FormComponent";
 
   export default {
     name: "Table",
     props:[ 'headers', 'list', 'type'],
     components: {
+      FormComponent,
       ItemCard,
       Actions,
     },
@@ -149,6 +150,9 @@
   td:first-child .mobile-headers {
     display:none;
   }
+  td:last-child {
+    border-bottom: var(--clr-grey) solid 2px;
+  }
 
   @media (min-width: 750px) { /* web */
     table {
@@ -165,6 +169,10 @@
       border-right: solid 2px #c4c4c4;
       border-bottom: solid 2px #c4c4c4;
       padding: 1em;
+    }
+
+    td:last-child {
+      border-bottom: solid 2px #c4c4c4;
     }
 
     th:first-child, td:first-child {
@@ -192,6 +200,7 @@
     th, td {
       display: table-cell;
     }
+
 
     td:first-child {
       font-family: var(--ff-opensans);

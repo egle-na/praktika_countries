@@ -3,9 +3,9 @@
 
     <button id="add-item-btn"
             class="shadow-container"
-            @click="$emit('openItemCard')"
+            @click="buttonClicked"
             title="Pridėti naują"
-    >&plus;</button>
+    ><slot>&plus;</slot></button>
 
   </div>
 </template>
@@ -13,11 +13,18 @@
 
   export default {
     name: 'AddItemBtn',
+    props: [ 'type' ],
     data() {
       return {
         isOpen: false
       }
     },
+    methods: {
+      buttonClicked() {
+        let eventName = this.type + 'Item'
+        this.$emit(eventName)
+      }
+    }
   }
 </script>
 
@@ -37,6 +44,7 @@
     width: 44px;
     height: 44px;
     padding: 0;
+    margin-right: 1.5rem;
 
     cursor: pointer;
     transform: scale(1);

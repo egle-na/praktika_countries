@@ -72,9 +72,9 @@
     cursor: default;
   }
 
-  .current-page:focus{
-    outline: solid var(--clr-accent);
-  }
+    /*.current-page:focus{*/
+    /*  outline: solid var(--clr-accent);*/
+    /*}*/
 
   @media (min-width: 750px) { /* web */
     .page-number {

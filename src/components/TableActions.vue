@@ -25,7 +25,9 @@
 
           <button @click="confirmDelete = false" class="confirm-close-btn">&times;</button>
           <p>Ar tikrai norite ištrinti šį elementą?</p>
-          <button @click="deleteItem(type, id)" class="shadow-container confirm-btn">Taip</button>
+          <button @click="deleteItem(type, id)"
+                  aria-label="Taip"
+                  class="shadow-container confirm-btn">Taip</button>
         </div>
       </div>
 
@@ -62,17 +64,15 @@
         let url;
 
         if(this.$route.path === "/countries/cities") {
-          url = `https://akademija.teltonika.lt/countries_api/api/countries/
-          ${this.item.relationships.country.data.id}/cities/${id}`;
+          url = `https://akademija.teltonika.lt/countries_api/api/countries/${this.item.relationships.country.data.id}/cities/${id}`;
         } else {
           url = `https://akademija.teltonika.lt/countries_api/api${this.$route.path}/${id}`;
         }
 
         this.$http.delete(url)
           .then(response => {
-            console.log(response.message);
             EventBus.$emit('sendMessage', response.data.message) // EVENT BUS
-            this.$emit('reloadTable')
+            EventBus.$emit('reloadTable')
           })
           .catch(error => console.error(error))
       },
@@ -95,6 +95,7 @@
   }
 
   button:hover path,
+  button:focus path,
   .delete-btn-active path {
     fill: #0054A6;
   }

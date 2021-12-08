@@ -95,7 +95,6 @@
             .then(response => this.catchResponse(response))
             .catch(error => {
               console.error(error);
-              console.log(JSON.stringify(error));
             })
         } else { // new item
           if (this.itemType === "countries"){
@@ -108,14 +107,14 @@
             .then(response => this.catchResponse(response))
             .catch(error => {
               console.error(error);
-              console.log(JSON.stringify(error));
             })
         }
       },
 
       catchResponse(response) {
-        this.$emit('reloadTable');
+        EventBus.$emit('reloadTable');
         EventBus.$emit('sendMessage', response.data.message)
+        this.$emit('close');
       },
 
       getCountriesList() { // get list of countries
@@ -142,7 +141,7 @@
   }
 
   .item-form {
-    height: 100%;
+    min-height: 380px;
   }
 
   form label {

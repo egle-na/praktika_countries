@@ -4,8 +4,7 @@
     <Table :headers="listParams"
            :list="list"
            :link="'cities'"
-           @reloadTable="$emit('reloadTable')"/>
-
+           />
   </div>
 </template>
 

@@ -4,22 +4,33 @@
     <Header>{{pageTitle}}</Header>
 
     <router-view>
-
       <!-- Title and Add Item Btn -->
       <title-container>
         <template v-slot:title >{{ pageTitle }}</template>
         <template v-slot:btn >
-          <add-item-btn @openItemCard="itemCardIsOpen = true"/>
+
+          <!-- Add Item Btn -->
+          <add-item-btn :type="'add'"
+                        @addItem="itemCardIsOpen = true">
+          &plus;</add-item-btn>
+
+          <!-- Upload Items Btn -->
+          <add-item-btn :type="'upload'"
+                        v-if="$route.name !== 'cities' "
+                        @uploadItem="uploadCardIsOpen = true">
+            <img src="./assets/icons/upArrow-87.svg" alt="">
+          </add-item-btn>
+
         </template>
-
-
       </title-container>
 
       <!-- Search and Date Filter -->
-      <search :query="params.search" @sendParams="setParams" />
+      <search :query="params.search" :perPage="per_page" @sendParams="setParams" />
 
       <!-- Display data table -->
-      <router-view name="table" class="table-container shadow-container" :list="list" :listParams="listParams" @reloadTable="getData"/>
+      <router-view name="table"
+                   class="table-container shadow-container"
+                   :list="list" :listParams="listParams"/>
 
       <!-- Display page numbers -->
       <page-numbers :meta="meta" @setParams="setParams"/>
@@ -27,15 +38,22 @@
     </router-view>
 
 
-      <!-- Add Item Card -->
-      <item-card v-if="itemCardIsOpen"
-                 :type="'add'"
-                 :inputs="listParams"
-                 @close="itemCardIsOpen = false"
-                 @reloadTable="getData"
-                 @sendData="displayMessage"
-      />
+    <!-- Add Item Card -->
+    <item-card v-if="itemCardIsOpen"
+               :type="'add'"
+               :inputs="listParams"
+               @close="itemCardIsOpen = false">
+      <form-component :names="listParams" :type="'add'" @close="itemCardIsOpen = false"/>
+    </item-card>
 
+    <!-- Upload Item Card -->
+    <item-card v-if="uploadCardIsOpen"
+               :type="'upload'"
+               @close="uploadCardIsOpen = false" >
+      <FileUpload :baseUrl="baseUrl" @close="uploadCardIsOpen = false" />
+    </item-card>
+
+    <!-- Feedback About Successful Action -->
     <message-card v-if="message" :message="message" />
 
   </div>
@@ -52,24 +70,29 @@
 
   import ItemCard from "@/components/ItemCard";
   import MessageCard from "@/components/MessageCard";
+  import FormComponent from "@/components/FormComponent";
+  import FileUpload from "@/components/FileUpload";
 
   export default {
     name: 'App',
     components: {
-      MessageCard,
-      AddItemBtn,
-      ItemCard,
       Header,
       TitleContainer,
+      AddItemBtn,
       Search,
       PageNumbers,
+      ItemCard,
+      FormComponent,
+      FileUpload,
+      MessageCard,
     },
 
     data() {
       return {
         baseUrl: "https://akademija.teltonika.lt/countries_api/api",
-        defaultParams: { page: 1, /*per_page: 10,*/ start_date: '', end_date: '', search: ''},
+        defaultParams: { page: 1,/* per_page: 10,*/ start_date: '', end_date: '', search: ''},
         params: { ...this.defaultParams },// --- query for filtering data initiated with default
+        per_page: 10,
 
         list: {}, // ----- data for the table
         meta: {}, // ----- metadata about page num, ect.
@@ -92,6 +115,7 @@
           ]
         },
         itemCardIsOpen: false,
+        uploadCardIsOpen:false,
         message: '',
       }
     },
@@ -100,6 +124,7 @@
       if(this.$route.name !== 'not-found'){
         this.getData(); // fetch data when page loads
         this.getPageTitle();
+        EventBus.$on('reloadTable', this.getData );
         EventBus.$on("sendMessage", msg => {
           this.message = msg;
 
@@ -112,7 +137,8 @@
 
     watch: {
       $route() { // fetch new data when the route changes
-        this.params = {...this.defaultParams};
+        const per_page = this.params.per_page
+        this.params = {per_page, ...this.defaultParams};
         this.getData();
         this.getPageTitle();
       },
@@ -121,6 +147,7 @@
     methods: {
       getData() {
         let url = this.baseUrl + this.$route.path;
+        // check if page is not empty after last item in page is deleted
 
         this.$http.get( url , { params: this.params})
           .then(response => {
@@ -233,10 +260,6 @@
     border-radius: 4px;
   }
 
-  button:focus {
-    outline: solid 2px;
-  }
-
   @media (min-width: 750px) { /* web */
     .container {
       width: 90%;
@@ -248,5 +271,3 @@
 
 </style>
 
-<style scoped>
-</style>

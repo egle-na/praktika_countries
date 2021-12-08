@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <Table :headers="listParams" :list="list" :type="'countries'" @reloadTable="$emit('reloadTable')"/>
+    <Table :headers="listParams" :list="list" :type="'countries'" />
 
   </div>
 </template>

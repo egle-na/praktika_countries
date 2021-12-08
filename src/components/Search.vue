@@ -30,19 +30,39 @@
       </div>
     </div>
 
+    <!-- Items Per Page type number -->
+<!--    <div>-->
+<!--      <label for="per_page" class="date-label label-bottom">per psl.</label>-->
+<!--      <input id="per_page" type="number" v-model="itemsPerPage" @input="sendPerPage"-->
+<!--             class="shadow-container">-->
+<!--    </div>-->
+
+    <!-- Items Per Page -->
+    <select class="shadow-container" id="per_page" v-model="itemsPerPage" @change="sendPerPage">
+      <option value="2">2</option>
+      <option value="4">4</option>
+      <option value="10" selected>10</option>
+      <option value="15">15</option>
+      <option value="20">20</option>
+      <option value="50">50</option>
+    </select>
   </div>
 </template>
 
 <script>
   export default {
     name: 'Search',
-    props: [ 'query' ],
+    props: [ 'query', 'perPage' ],
     data() {
       return {
         search: '',
         maxStartDate: '',
         minEndDate: '',
+        itemsPerPage: '',
       }
+    },
+    created() {
+      this.itemsPerPage = this.perPage ? this.perPage : 10;
     },
     watch: {
       $route() {
@@ -66,10 +86,18 @@
         this.maxStartDate = val;
         this.$emit('sendParams', 'end_date', val)
       },
+      sendPerPage(event) {
+        let val = event.target.value;
+        if(val === 0 || val === '0' || isNaN(val)) {
+          this.itemsPerPage = 10;
+          val = 10;
+        }
+        this.$emit('sendParams', 'per_page', val)
+      },
       clearSearch(event) {
         this.search = '';
         event.target.parentNode.childNodes[0].focus();
-      }
+      },
     },
     computed: {
       searchBtnFocus() {
@@ -106,7 +134,8 @@
     margin-bottom: 1rem;
   }
 
-  #search {
+  #search,
+  #per_page {
     background: var(--clr-light);
     color: var(--clr-grey);
     font: inherit;
@@ -176,8 +205,32 @@
     background: var(--clr-light);
   }
 
+  #per_page {
+    padding: 1em;
+    text-align: center;
+    width: 50px;
+    max-width: max-content;
+  }
+
+  select#per_page {
+    width: initial;
+    max-width: initial;
+    padding: .5em 0 .5em .5em;
+  }
+
   .has-value {
     color: var(--clr-accent)
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
   }
 
   @media (min-width: 550px) { /* web */

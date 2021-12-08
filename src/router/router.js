@@ -21,7 +21,7 @@ const router = new VueRouter({
             component: Countries,
         },
         {
-            path: '/cities',
+            path: '/countries/cities',
             name: 'cities',
             component: Cities,
             children: [

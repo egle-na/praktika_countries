@@ -11,7 +11,7 @@
         <add-item-btn :type="'add'" @addItem="itemCardIsOpen = true">&plus;</add-item-btn>
 
         <!-- Upload Items Btn -->
-        <add-item-btn :type="'upload'" @uploadItem="uploadCardIsOpen = true">
+        <add-item-btn v-if="pageTitle !== 'Miestai'" :type="'upload'" @uploadItem="uploadCardIsOpen = true">
           <img src="../assets/icons/upArrow-87.svg" alt="">
         </add-item-btn>
 
@@ -79,10 +79,12 @@
 
     methods: {
       getPageTitle() {
-        this.$http.get(this.baseUrl + "/countries/" + this.$route.params.country_id)
-          .then(response => {
-            this.pageTitle = response.data.data.attributes.name;
-          }).catch(error => console.error(error));
+        if(this.$route.name === 'country'){
+          this.$http.get(this.baseUrl + "/countries/" + this.$route.params.country_id)
+            .then(response => {
+              this.pageTitle = response.data.data.attributes.name;
+            }).catch(error => console.error(error));
+        }
       },
     },
   }

@@ -1,7 +1,3 @@
-<!--<template>-->
-
-<!--</template>-->
-
 <script>
 
   import AddItemBtn from "@/components/AddItemBtn";
@@ -46,14 +42,14 @@
       },
     },
     methods: {
-      getData() { // mixin ?
+      getData() {
         let url = this.baseUrl + this.$route.path;
-        // check if page is not empty after last item in page is deleted
 
         this.$http.get( url , { params: this.params})
             .then(response => {
               this.list = response.data.data;
               this.meta = response.data.meta;
+              this.checkIfPageAvailable(this.meta);
             })
             .catch(error => {
               console.error(error.response.data.message);
@@ -68,6 +64,13 @@
         }
         this.getData();
       },
+
+      checkIfPageAvailable(meta) {
+        if(meta.current_page > meta.last_page) {
+          this.params.page = meta.last_page;
+          this.getData();
+        }
+      }
     },
 
   }
